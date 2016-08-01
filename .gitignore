@@ -6,6 +6,6 @@ build
 /**/*.iml
 /**.idea
 .gradle
-restkeeper.ipr
-restkeeper.iws
-restkeeper.iml
+*.ipr
+*.iws
+*.iml

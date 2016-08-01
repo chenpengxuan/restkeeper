@@ -46,6 +46,9 @@ ext {
 jar {
     baseName = "restkeeper"
 }
+// 启动类
+mainClassName = 'com.ymatou.restkeeper.Application'
+
 configurations {
 
     compile.exclude group: "org.eclipse.jetty.websocket"
