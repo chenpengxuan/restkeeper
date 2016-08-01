@@ -1,0 +1,57 @@
+<!--
+  ~ /*
+  ~  (C) Copyright 2016 Ymatou (http://www.ymatou.com/).
+  ~  All rights reserved.
+  ~  */
+  -->
+
+<div class="widgets">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div ba-panel ba-panel-title="应用管理功能列表" ba-panel-class="with-scroll">
+        <div style="padding-bottom:20px;">
+          <form novalidate>
+              <pre style="padding-top: 10px;white-space: nowrap">
+                  功能名称<input name="name" type="text" ng-model="func.name">
+                 <!-- 角色名称
+                  <select name="roleId" ng-model="user.roleId">
+                    <option value="">&#45;&#45;请选择&#45;&#45;</option>
+                    <option ng-repeat="r in roles" value="{{r.id}}">{{r.roleName}}</option>
+                  </select>-->
+                  <button class="btn btn-primary btn-large" ng-click="search()">查询</button>
+                  <button class="btn btn-info btn-large" ng-click="add()">创建功能</button>
+              </pre>
+          </form>
+        </div>
+        <div class="horizontal-scroll">
+          <table class="table">
+            <thead>
+            <tr>
+              <th class="table-id" >#</th>
+              <th>name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in funcList">
+              <td class="table-id">{{item.id}}</td>
+              <td>{{item.name}}</td>
+              <td><a ui-sref="app.func-add">修改</a></td>
+            </tr>
+            </tbody>
+          </table>
+          <paging
+                  page="page"
+                  page-size="pageSize"
+                  total="total"
+                  show-prev-next="true"
+                  show-first-last="true"
+                  scroll-top="true"
+                  paging-action="pagingAction(page, pageSize,total)"
+                  ></paging>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
