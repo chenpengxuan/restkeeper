@@ -24,6 +24,8 @@ apply plugin: "maven"
 apply plugin: 'application'
 apply plugin: "eclipse-wtp"
 
+
+
 springBoot {
     executable = true
 }
@@ -93,10 +95,6 @@ dependencies {
 
 }
 
-task createScript(){
-//    Properties p = new Properties();
-//    p.getProperty()
-}
 
 task wrapper(type: Wrapper) {
     gradleVersion = "2.4"
