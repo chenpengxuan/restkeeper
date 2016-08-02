@@ -3,16 +3,15 @@
  */
 package com.ymatou.restkeeper.model.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 
  * @author qianmin 2016年8月2日 上午10:37:14
  *
  */
+@Entity
+@Table(name = "function_param")
 public class FunctionParam extends Audit {
 
     @Id

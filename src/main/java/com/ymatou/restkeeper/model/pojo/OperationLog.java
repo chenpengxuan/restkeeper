@@ -5,16 +5,15 @@ package com.ymatou.restkeeper.model.pojo;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 
  * @author qianmin 2016年8月2日 上午10:50:29
  *
  */
+@Entity
+@Table(name = "operation_log")
 public class OperationLog extends Audit {
 
     @Id
