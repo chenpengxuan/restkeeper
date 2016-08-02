@@ -23,11 +23,9 @@
     $scope.submit = function(){
       $scope.functionVo.functionParams = $scope.functionParams;
       console.log($scope.functionVo);
-      console.log();
-
       $.ajax({
         type: "POST",
-        url: "/Service/ListString",
+        url: "/function/save",
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify($scope.functionVo),
@@ -45,8 +43,8 @@
     ];
 
     $scope.arrays = [
-      {value: "0", text: '否'},
-      {value: "1", text: '是'}
+      {value: "false", text: '否'},
+      {value: "true", text: '是'}
     ];
 
 
@@ -81,8 +79,6 @@
     $scope.removeParam = function(index) {
       $scope.functionParams.splice(index, 1);
     };
-
-    editableOptions.theme = 'bs3';
 
     editableOptions.theme = 'bs3';
     editableThemes['bs3'].submitTpl = '<button type="submit" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';

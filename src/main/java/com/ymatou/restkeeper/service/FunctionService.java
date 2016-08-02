@@ -19,5 +19,5 @@ public interface FunctionService extends BaseService<Function>{
      * @param function
      * @return
      */
-    public String submit(FunctionVo function);
+    String submit(FunctionVo function);
 }
