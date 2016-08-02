@@ -7,43 +7,43 @@
 
 <div class="widgets" ng-controller="funcAddCtrl">
 
-    <form>
+    <div id="form" ng-model="functionVo" >
         <div class="form-group">
-            <label for="input01">Text</label>
-            <input type="text" class="form-control" id="input01" placeholder="Text">
+            <label for="name">功能名称</label>
+            <input type="text" class="form-control" ng-model="functionVo.name" id="name" name="name" placeholder="功能名称">
+            <input type="hidden" id="applicationId" ng-model="functionVo.applicationId" name="applicationId" value="">
         </div>
         <div class="form-group">
-            <label for="input02">Password</label>
-            <input type="password" class="form-control" id="input02" placeholder="Password">
+            <label for="url">URL</label>
+            <input type="text" class="form-control" ng-model="functionVo.url" id="url" name="url" placeholder="请求业务系统Url">
         </div>
         <div class="form-group">
-            <label for="input03">Rounded Corners</label>
-            <input type="text" class="form-control form-control-rounded" id="input03" placeholder="Rounded Corners">
+            <label for="httpMethod">提交方式</label>
+            <select class="form-control selectpicker" ng-model="functionVo.httpMethod" name="httpMethod" id="httpMethod">
+                <option value="POST">POST</option>
+                <option value="GET">GET</option>
+            </select>
         </div>
         <div class="form-group">
-            <label for="input04">With help</label>
-            <input type="text" class="form-control" id="input04" placeholder="With help">
-            <span class="help-block sub-little-text">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+            <label for="contentType">内容类型</label>
+            <select class="form-control selectpicker" ng-model="functionVo.contentType" name="contentType" id="contentType">
+                <option value="application/json">application/json</option>
+                <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+            </select>
         </div>
-        <div class="form-group">
-            <label for="input05">Disabled Input</label>
-            <input type="text" class="form-control" id="input05" placeholder="Disabled Input" disabled>
+
+        <div ba-panel ba-panel-title="功能参数设置" ba-panel-class="with-scroll">
+            <div include-with-scope="func-param.html"></div>
         </div>
 
         <div class="form-group">
-            <label for="textarea01">Textarea</label>
-            <textarea placeholder="Default Input" class="form-control" id="textarea01"></textarea>
+            <label for="description">功能描述</label>
+            <textarea class="form-control" id="description" ng-model="functionVo.description" name="description"></textarea>
         </div>
 
-        <div class="form-group">
-            <input type="text" class="form-control input-sm" id="input2" placeholder="Small Input">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control input-lg" id="input4" placeholder="Large Input">
-        </div>
         <div class="private-item" style="text-align:center">
-            <button type="button" class="btn btn-primary">保存</button>
+            <button type="button" ng-click="submit()" class="btn btn-primary">保存</button>
             <input  type="button" ng-click="back()" value="返回" class="btn btn-warning"/>
         </div>
-    </form>
+    </div>
 </div>

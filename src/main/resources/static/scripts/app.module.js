@@ -37,7 +37,7 @@
             order: 100,
           },
         }).state('app.func-add', {
-          url: '/func-add',
+          url: '/func-add/:id',
           templateUrl: 'func-add.html',
           controller: 'funcAddCtrl',
           title: '创建功能',

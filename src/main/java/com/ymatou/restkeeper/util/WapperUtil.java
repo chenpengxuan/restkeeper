@@ -8,16 +8,23 @@
 package com.ymatou.restkeeper.util;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 public class WapperUtil {
 
     public static Result success(){
         return success(null);
     }
-
-    public static Result success(Object data){
-        return newInstance(ResponseStatusEnum.SUCCESS.isSuccess(), ResponseStatusEnum.SUCCESS.getStatusInfo(), data);
+    public static Result success(String msg){
+        return success(msg,null);
     }
-
+    public static Result success(Object data){
+        return success("",data);
+    }
+    public static Result success(String msg,Object data){
+        return newInstance(ResponseStatusEnum.SUCCESS.isSuccess(),
+                StringUtils.isBlank(msg) ? ResponseStatusEnum.SUCCESS.getStatusInfo() : msg, data);
+    }
     public static Result error(){
         return error(null, null);
     }
@@ -26,7 +33,7 @@ public class WapperUtil {
         return error(null, message);
     }
 
-    public static Result error(boolean success,String message){
+    public static Result result(boolean success,String message){
         return newInstance(success, message, null);
     }
 

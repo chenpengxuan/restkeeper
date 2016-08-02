@@ -19,9 +19,9 @@
   function funcListCtrl($scope, $state,$http) {
 
 
-    $scope.page = 1; //设置当前页数
-    $scope.pageSize = 10;//设置一页多少条
-    $scope.total = 0;//设置一页多少条
+    $scope.page = 1;
+    $scope.pageSize = 10;
+    $scope.total = 0;
 
     $scope.pagingAction = function(page,pageSize) {
       var param = {};
@@ -36,6 +36,12 @@
       });
     };
     $scope.pagingAction($scope.page,$scope.pageSize,$scope.total);
+
+    $scope.search = function(){
+      console.log($scope)
+      console.log($state)
+      // this.$state.go("app.func-add");
+    }
   }
 
 })();

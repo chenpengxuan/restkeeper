@@ -34,7 +34,6 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 @Configuration
 //@EnableWebMvc
-//@ComponentScan(basePackages = {"com.mm"},excludeFilters = {@ComponentScan.Filter(type= FilterType.REGEX,pattern = {"org.springframework.stereotype.Service"})})
 @ComponentScan(basePackages = "com.ymatou",useDefaultFilters=false,
         includeFilters = {
                 @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class),
@@ -81,7 +80,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/");
         registry.addResourceHandler("/app/**").addResourceLocations("classpath:/static/app/");
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+//        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
 
 //    @Override
@@ -142,33 +141,33 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 //    }
 
 
-//    @Configuration
-//    @ConditionalOnWebApplication
-//    @ConditionalOnClass({WebMvcConfigurerAdapter.class})
-//    @ConditionalOnMissingBean({OpenEntityManagerInViewInterceptor.class, OpenEntityManagerInViewFilter.class})
-//    @ConditionalOnProperty(
-//            prefix = "spring.jpa",
-//            name = {"open-in-view"},
-//            havingValue = "true",
-//            matchIfMissing = true
-//    )
-//    protected static class JpaWebConfiguration {
-//        protected JpaWebConfiguration() {
-//        }
-//
-//        @Configuration
-//        protected static class JpaWebMvcConfiguration extends WebMvcConfigurerAdapter {
-//            protected JpaWebMvcConfiguration() {
-//            }
-//
-//            @Bean
-//            public OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
-//                return new OpenEntityManagerInViewInterceptor();
-//            }
-//
-//            public void addInterceptors(InterceptorRegistry registry) {
-//                registry.addWebRequestInterceptor(this.openEntityManagerInViewInterceptor());
-//            }
-//        }
-//    }
+    @Configuration
+    @ConditionalOnWebApplication
+    @ConditionalOnClass({WebMvcConfigurerAdapter.class})
+    @ConditionalOnMissingBean({OpenEntityManagerInViewInterceptor.class, OpenEntityManagerInViewFilter.class})
+    @ConditionalOnProperty(
+            prefix = "spring.jpa",
+            name = {"open-in-view"},
+            havingValue = "true",
+            matchIfMissing = true
+    )
+    protected static class JpaWebConfiguration {
+        protected JpaWebConfiguration() {
+        }
+
+        @Configuration
+        protected static class JpaWebMvcConfiguration extends WebMvcConfigurerAdapter {
+            protected JpaWebMvcConfiguration() {
+            }
+
+            @Bean
+            public OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
+                return new OpenEntityManagerInViewInterceptor();
+            }
+
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addWebRequestInterceptor(this.openEntityManagerInViewInterceptor());
+            }
+        }
+    }
 }

@@ -4,7 +4,19 @@
   ~  All rights reserved.
   ~  */
   -->
+<script>
+  function logout () {
+    $.ajax({
+      url: "/logout",
+      success: function(data){
+        if(data.success){
+          window.location = "login.html";
+        }
+      }
+    });
+  }
 
+</script>
 <div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">
   <a href="#/dashboard" class="al-logo clearfix"><span>Rest</span>Keeper</a>
   <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
@@ -30,6 +42,7 @@
   <!--</div>-->
 
   <div class="user-profile clearfix" style="min-width: 50px;">
-    <a href="#" class="signout" onclick="signout()"><i class="fa fa-power-off"></i>退出</a>
+    <a href="#" class="signout" onclick="logout();"><i class="fa fa-power-off"></i>退出</a>
   </div>
+
 </div>

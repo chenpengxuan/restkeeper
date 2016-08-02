@@ -7,13 +7,13 @@
 
 package com.ymatou.restkeeper.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CharacterEncodingFilter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Configuration
@@ -37,6 +37,18 @@ public class ApplicationFilter {
         return mappingEncodingFilter;
     }
 
-
+//    @Bean
+//    public FilterRegistrationBean urlFilter() {
+//        UrlFilter urlFilter = new UrlFilter();
+//
+//        FilterRegistrationBean filter = new FilterRegistrationBean(urlFilter);
+//
+//        List<String> urlPatterns = new ArrayList<String>();
+//        urlPatterns.add("/*");
+//        filter.setUrlPatterns(urlPatterns);
+//        filter.setOrder(2);
+//
+//        return filter;
+//    }
 
 }
