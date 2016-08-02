@@ -4,15 +4,27 @@
 package com.ymatou.restkeeper.util;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,23 +38,47 @@ public class HttpClientUtil {
 
     private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
+    public static Integer CONN_TIME_OUT = 3000;
+    public static Integer SOCKET_TIME_OUT = 10000;
+    public static Integer DEFAULT_MAX_PER_ROUTE = 40;
+    public static Integer MAX_TOTAL = 400;
+
+    public static RequestConfig requestConfig;
+    public static HttpClient httpClient;
+
+    static {
+        requestConfig = RequestConfig.custom().setConnectionRequestTimeout(CONN_TIME_OUT)
+                .setSocketTimeout(SOCKET_TIME_OUT).build();
+
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+        cm.setDefaultMaxPerRoute(DEFAULT_MAX_PER_ROUTE);
+        cm.setMaxTotal(MAX_TOTAL);
+
+        httpClient = HttpClients.custom().setConnectionManager(cm).setDefaultRequestConfig(requestConfig).build();
+    }
+    
     /**
      * 发送Get请求
      * 
      * @param url
-     * @param httpClient
      * @return
      * @throws IOException
+     * @throws URISyntaxException 
      */
-    public static String sendGet(String url, HttpClient httpClient) throws IOException {
+    public static String sendGet(String url, Map<String, String> paramsMap) throws Exception{
         String result = null;
-
+        
         HttpGet httpGet = new HttpGet(url);
-        logger.info("executing request" + httpGet.getRequestLine());
-        logger.info("request header: " + Arrays.toString(httpGet.getAllHeaders()));
-
+        List<NameValuePair> params = initParams(url, paramsMap);
+        String str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));
+        
         try {
+            httpGet.setURI(new URI(httpGet.getURI().toString() + "?" + str));
+            logger.info("executing request" + httpGet.getRequestLine());
+            logger.info("request header: " + Arrays.toString(httpGet.getAllHeaders()));
+            
             HttpResponse response = httpClient.execute(httpGet);
+            
             HttpEntity entity = response.getEntity();
             result = EntityUtils.toString(entity, "UTF-8");
             logger.info("response message:" + result);
@@ -60,13 +96,10 @@ public class HttpClientUtil {
      * @param url
      * @param body
      * @param contentType
-     * @param header
-     * @param httpClient
      * @return
      * @throws IOException
      */
-    public static String sendPost(String url, String body, String contentType, HashMap<String, String> header,
-            HttpClient httpClient) throws IOException {
+    public static String sendPost(String url, String body, String contentType) throws Exception {
         String result = null;
 
         HttpPost httpPost = new HttpPost(url);
@@ -89,4 +122,20 @@ public class HttpClientUtil {
 
         return result;
     }
+    
+    private static List<NameValuePair> initParams(String url, Map<String, String> paramsMap) {
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        if (paramsMap == null)
+            return params;
+        Iterator<String> iterator = paramsMap.keySet().iterator();
+
+
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            params.add(new BasicNameValuePair(key, paramsMap.get(key)));
+        }
+        return params;
+    }
+
 }

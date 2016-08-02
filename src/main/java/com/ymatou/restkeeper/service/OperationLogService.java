@@ -3,11 +3,13 @@
  */
 package com.ymatou.restkeeper.service;
 
+import com.ymatou.restkeeper.model.pojo.OperationLog;
+
 /**
  * 
  * @author qianmin 2016年8月2日 下午1:55:03
  *
  */
-public interface OperationLogService {
-
+public interface OperationLogService extends BaseService<OperationLog>{
+    
 }

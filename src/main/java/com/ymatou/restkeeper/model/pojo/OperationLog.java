@@ -3,6 +3,8 @@
  */
 package com.ymatou.restkeeper.model.pojo;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,6 +36,9 @@ public class OperationLog extends Audit {
 
     @Column(name = "response")
     protected String response;
+    
+    @Column(name = "operate_time")
+    private Date operateTime;
 
     public Long getId() {
         return id;
@@ -81,5 +86,13 @@ public class OperationLog extends Audit {
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public Date getOperateTime() {
+        return operateTime;
+    }
+
+    public void setOperateTime(Date operateTime) {
+        this.operateTime = operateTime;
     }
 }

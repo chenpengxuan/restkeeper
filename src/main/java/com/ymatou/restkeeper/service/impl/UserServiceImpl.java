@@ -22,6 +22,7 @@ import com.ymatou.restkeeper.model.pojo.User;
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 
 	private UserRepository userRepository;
+	
 	@Autowired
 	private UserMapper userMapper;
 

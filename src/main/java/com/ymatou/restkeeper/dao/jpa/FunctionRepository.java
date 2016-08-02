@@ -6,14 +6,14 @@ package com.ymatou.restkeeper.dao.jpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ymatou.restkeeper.model.pojo.OperationLog;
+import com.ymatou.restkeeper.model.pojo.Function;
 
 /**
  * 
- * @author qianmin 2016年8月2日 下午1:58:28
+ * @author qianmin 2016年8月2日 下午2:35:52
  *
  */
 @Repository
-public interface OperationLogRepository extends JpaRepository<OperationLog, Long>{
+public interface FunctionRepository extends JpaRepository<Function,Long>{
 
 }

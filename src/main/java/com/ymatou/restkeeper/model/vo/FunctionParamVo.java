@@ -3,11 +3,6 @@
  */
 package com.ymatou.restkeeper.model.vo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
  * 
  * @author qianmin 2016年8月2日 上午11:50:08
