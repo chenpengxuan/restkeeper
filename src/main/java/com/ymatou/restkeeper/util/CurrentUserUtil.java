@@ -17,8 +17,11 @@ public class CurrentUserUtil {
     }
 
     public static User getCurrentUser(){
-
         return SessionUtil.get(SessionUtil.SESSION_KEY_USER);
+    }
+    
+    public static String getCurrentUserName(){
+        return getCurrentUser() == null ? null : getCurrentUser().getUsername();
     }
 
 }

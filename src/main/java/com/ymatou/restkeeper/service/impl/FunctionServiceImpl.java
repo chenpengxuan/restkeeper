@@ -3,11 +3,13 @@
  */
 package com.ymatou.restkeeper.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.ymatou.restkeeper.dao.mapper.FunctionMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +29,7 @@ import com.ymatou.restkeeper.model.vo.FunctionVo;
 import com.ymatou.restkeeper.service.FunctionService;
 import com.ymatou.restkeeper.service.OperationLogService;
 import com.ymatou.restkeeper.util.Constants;
+import com.ymatou.restkeeper.util.CurrentUserUtil;
 import com.ymatou.restkeeper.util.HttpClientUtil;
 
 /**
@@ -36,7 +39,7 @@ import com.ymatou.restkeeper.util.HttpClientUtil;
  */
 @Service
 public class FunctionServiceImpl extends BaseServiceImpl<Function> implements FunctionService {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(FunctionServiceImpl.class);
 
     private FunctionRepository functionRepository;
@@ -56,14 +59,29 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
     public String submit(FunctionVo function) {
         String request = null;
         String response = null;
+
+        String url = function.getUrl();
+        String contentType = function.getContentType();
+        String paramJson = function.getFunctionParam();
+        Map<String, Object> paramMap = getParamMap(function);
         try {
-            if (Constants.HTTP_METHOD_POST.equals(function.getHttpMethod())) {
-                Map<String, String> requestMap = getRequestMap(function);
-                request = JSON.toJSONString(requestMap);
-                response = HttpClientUtil.sendGet(function.getUrl(), requestMap);
-            } else {
-                request = getRequestBody(function);
-                response = HttpClientUtil.sendPost(function.getUrl(), request, function.getContentType());
+            if (Constants.HTTP_METHOD_GET.equals(function.getHttpMethod())) { // get
+                
+                response = HttpClientUtil.sendGet(function.getUrl(), paramMap);
+                
+            } else if (Constants.HTTP_METHOD_POST.equals(function.getHttpMethod())) { // post
+
+                if (Constants.APPLICATION_JSON.equals(contentType)) { // post json
+                    request = StringUtils.isBlank(paramJson) ? JSON.toJSONString(paramMap) : paramJson;
+                    response = HttpClientUtil.sendPost(function.getUrl(), request, contentType);
+                } else if (Constants.APPLICATION_FORM_URLENCODED.equals(contentType)) { // post form
+                    response = HttpClientUtil.sendPost(url, paramMap, contentType);
+                }else{
+                    throw new Exception("HttpMethod not supported.");
+                }
+                
+            }else{
+                throw new Exception("ContentType not supported.");
             }
         } catch (Exception e) {
             logger.error("submit request failed. ", e);
@@ -76,6 +94,43 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
         return response;
     }
 
+    private Map<String, Object> getParamMap(FunctionVo function) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        for (FunctionParamVo functionParam : function.getFunctionParams()) {
+            String name = functionParam.getName();
+            String type = functionParam.getType();
+            String format = functionParam.getFormat();
+            Object value = functionParam.getValue();
+            if (functionParam.isArray()) {
+                value = Arrays.asList(value.toString().split(","))
+                        .stream().map(v -> format(type, format, v)).collect(Collectors.toList());
+            } else {
+                value = format(type, format, value);
+            }
+            paramMap.put(name, value);
+        }
+
+        return paramMap;
+    }
+
+    private Object format(String type, String format, Object original) {
+        Object result = null;
+        switch (type) {
+            case Constants.FORMAT_STRING:
+                result = String.valueOf(original);
+                break;
+            case Constants.FORMAT_NUMBER:
+                result = new BigDecimal(String.valueOf(original));
+                break;
+            case Constants.FORMAT_DATE:
+                result = new SimpleDateFormat(format).format(original);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
     private OperationLog generateOperationLog(FunctionVo function, String request, String response) {
         OperationLog operationLog = new OperationLog();
         operationLog.setCreateTime(new Date());
@@ -84,53 +139,9 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
         operationLog.setFunctionId(function.getId());
         operationLog.setRequest(request);
         operationLog.setResponse(response);
-        operationLog.setUserId(1222L); // TODO
-        operationLog.setUserName(""); // TODO
+        operationLog.setUserId(CurrentUserUtil.getCurrentUserId());
+        operationLog.setUserName(CurrentUserUtil.getCurrentUserName());
         return operationLog;
-    }
-
-    private Map<String, String> getRequestMap(FunctionVo function) {
-        Map<String, String> paramMap = new HashMap<>();
-        for (FunctionParamVo functionParam : function.getFunctionParams()) {
-            String name = functionParam.getName();
-            String format = functionParam.getType();
-            Object value = functionParam.getValue();
-            if (format.equals("Date")) {
-                value = new SimpleDateFormat(functionParam.getFormat()).format(value);
-            }
-            paramMap.put(name, String.valueOf(value));
-        }
-        return paramMap;
-    }
-
-    private String getRequestBody(FunctionVo function) {
-        String paramJson = function.getFunctionParam();
-        HashMap<String, Object> paramMap = new HashMap<>();
-        for (FunctionParamVo functionParam : function.getFunctionParams()) {
-            String name = functionParam.getName();
-            String format = functionParam.getFormat();
-            Object value = functionParam.getValue();
-            if (functionParam.isArray()) {
-                value = Arrays.asList(value.toString().split(","));
-            }else{
-                switch (functionParam.getType()) {
-                    case Constants.FORMAT_STRING:
-                        paramMap.put(name, String.valueOf(value));
-                        break;
-                    case Constants.FORMAT_NUMBER:
-                        paramMap.put(name, value);
-                        break;
-                    case Constants.FORMAT_DATE:
-                        paramMap.put(name, new SimpleDateFormat(format).format(value));
-                        break;
-                    default:
-                        //TODO
-                        break;
-                }
-            }
-        }
-
-        return StringUtils.isBlank(paramJson) ? JSON.toJSONString(paramMap) : paramJson;
     }
 
     @Override

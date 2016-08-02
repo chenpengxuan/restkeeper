@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +66,11 @@ public class HttpClientUtil {
      * @throws IOException
      * @throws URISyntaxException 
      */
-    public static String sendGet(String url, Map<String, String> paramsMap) throws Exception{
+    public static String sendGet(String url, Map<String, Object> paramsMap) throws Exception{
         String result = null;
         
         HttpGet httpGet = new HttpGet(url);
-        List<NameValuePair> params = initParams(url, paramsMap);
+        List<NameValuePair> params = initParams(paramsMap);
         String str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));
         
         try {
@@ -88,7 +89,30 @@ public class HttpClientUtil {
 
         return result;
     }
+    
+    public static String sendPost(String url, Map<String, Object> paramsMap, String contentType) throws IOException {
+        String result = null;
 
+        HttpPost httpPost = new HttpPost(url);
+        List<NameValuePair> body = initParams(paramsMap);
+        UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(body, "UTF-8");
+        httpPost.setEntity(postEntity); // set request body
+        httpPost.addHeader("Content-Type", contentType); // 设置body类型
+        logger.info("executing request" + httpPost.getRequestLine());
+        logger.info("request header: " + Arrays.toString(httpPost.getAllHeaders()));
+        logger.info("request body: " + body);
+
+        try {
+            HttpResponse response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            result = EntityUtils.toString(entity, "UTF-8");
+            logger.info("response message:" + result);
+        } finally {
+            httpPost.releaseConnection();
+        }
+
+        return result;
+    }
 
     /**
      * 发送Post请求
@@ -123,18 +147,17 @@ public class HttpClientUtil {
         return result;
     }
     
-    private static List<NameValuePair> initParams(String url, Map<String, String> paramsMap) {
-
+    private static List<NameValuePair> initParams(Map<String, Object> paramsMap) {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         if (paramsMap == null)
             return params;
+        
         Iterator<String> iterator = paramsMap.keySet().iterator();
-
-
         while (iterator.hasNext()) {
             String key = iterator.next();
-            params.add(new BasicNameValuePair(key, paramsMap.get(key)));
+            params.add(new BasicNameValuePair(key, String.valueOf(paramsMap.get(key))));
         }
+        
         return params;
     }
 
