@@ -7,6 +7,8 @@
 
 package com.ymatou.restkeeper.model.vo;
 
+import java.util.List;
+
 /**
  * @author luoshiqian 2016/7/28 18:12
  */
@@ -14,6 +16,13 @@ public class FunctionVo {
 
     private Long id;
     private String name;
+    private String description;
+    private String url;
+    private String httpMethod;
+    private String contentType;
+    private String author;
+    private List<FunctionParamVo> functionParams;   //key-value
+    private String functionParam;   //json
 
     public FunctionVo(Long id, String name) {
         this.id = id;
@@ -37,5 +46,61 @@ public class FunctionVo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getHttpMethod() {
+        return httpMethod;
+    }
+
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public List<FunctionParamVo> getFunctionParams() {
+        return functionParams;
+    }
+
+    public void setFunctionParams(List<FunctionParamVo> functionParams) {
+        this.functionParams = functionParams;
+    }
+
+    public String getFunctionParam() {
+        return functionParam;
+    }
+
+    public void setFunctionParam(String functionParam) {
+        this.functionParam = functionParam;
     }
 }

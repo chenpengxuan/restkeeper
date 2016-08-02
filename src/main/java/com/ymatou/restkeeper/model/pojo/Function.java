@@ -20,6 +20,7 @@ public class Function extends Audit {
     @Column(name = "function_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
+    
     @Column(name = "application_id")
     protected Long applicationId;
 
