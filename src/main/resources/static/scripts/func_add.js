@@ -18,11 +18,31 @@
   /** @ngInject */
   function funcAddCtrl($scope,$stateParams,$state,$http,$location, editableOptions, editableThemes,$filter) {
 
-    $scope.functionVo = {};
+    $scope.functionVo = {
+      functionParams:[]
+    };
+
+    console.log($state);
+    console.log($scope);
+    $state.current.title = "创建功能";
+    var id = $stateParams.id;
+    if (id != "") {
+      $state.current.title = "修改功能";
+      $http({
+        url: "/function/get",
+        method: 'GET',
+        params: {id: id}
+      }).success(function (data) {
+        if (data.success) {
+          $scope.functionVo = data.content;
+
+
+          console.log($scope.functionVo);
+        }
+      });
+    }
 
     $scope.submit = function(){
-      $scope.functionVo.functionParams = $scope.functionParams;
-      console.log($scope.functionVo);
       $.ajax({
         type: "POST",
         url: "/function/save",
@@ -33,18 +53,17 @@
           alert(data);
         }
       });
-
     };
 
     $scope.paramTypes = [
       {value: "number", text: '数字'},
       {value: "string", text: '字符串'},
-      {value: "time", text: '日期'},
+      {value: "time", text: '日期'}
     ];
 
     $scope.arrays = [
-      {value: "false", text: '否'},
-      {value: "true", text: '是'}
+      {value: false, text: '否'},
+      {value: true, text: '是'}
     ];
 
 
@@ -57,27 +76,24 @@
     };
 
     $scope.showIsArray = function(funcParam) {
-      var selected = [];
-      if(funcParam.array) {
-        selected = $filter('filter')($scope.arrays, {value: funcParam.array});
-      }
+      var selected = $filter('filter')($scope.arrays, {value: funcParam.array});
+
       return selected.length ? selected[0].text : 'Not set';
     };
 
-    $scope.functionParams = [];
     $scope.addParam = function() {
       $scope.inserted = {
-        id: $scope.functionParams.length+1,
+        id: $scope.functionVo.functionParams.length+1,
         name: '',
         description:'',
         type: "string",
         array: "0"
       };
-      $scope.functionParams.push($scope.inserted);
+      $scope.functionVo.functionParams.push($scope.inserted);
     };
 
     $scope.removeParam = function(index) {
-      $scope.functionParams.splice(index, 1);
+      $scope.functionVo.functionParams.splice(index, 1);
     };
 
     editableOptions.theme = 'bs3';

@@ -7,6 +7,7 @@
 
 package com.ymatou.restkeeper.config;
 
+import com.ymatou.common.mybatis.interceptor.WebInterceptor;
 import com.ymatou.restkeeper.exception.MySimpleMappingExceptionResolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -116,12 +117,10 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 //
 //    }
 //
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LocaleInterceptor());
-//        registry.addInterceptor(new ThemeInterceptor()).addPathPatterns("/**").excludePathPatterns("/admin/**");
-//        registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/secure/*");
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new WebInterceptor()).addPathPatterns("/**");
+    }
 //
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {

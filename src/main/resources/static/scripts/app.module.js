@@ -40,8 +40,8 @@
           url: '/func-add/:id',
           templateUrl: 'func-add.html',
           controller: 'funcAddCtrl',
-          title: '创建功能',
-          hide:true
+          title: '创建/修改功能',
+          // hide:true
         });
     $urlRouterProvider.when('/app','/app/func-list');
   }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ymatou.restkeeper.model.pojo.FunctionParam;
 
+import java.util.List;
+
 /**
  * 
  * @author qianmin 2016年8月2日 下午2:35:52
@@ -19,4 +21,5 @@ import com.ymatou.restkeeper.model.pojo.FunctionParam;
 @Repository
 public interface FunctionParamRepository extends JpaRepository<FunctionParam,Long>{
 
+    List<FunctionParam> findByFunctionId(Long functionId);
 }

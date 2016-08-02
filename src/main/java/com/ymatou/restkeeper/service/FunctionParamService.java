@@ -7,6 +7,9 @@
 package com.ymatou.restkeeper.service;
 
 import com.ymatou.restkeeper.model.pojo.FunctionParam;
+import com.ymatou.restkeeper.model.vo.FunctionParamVo;
+
+import java.util.List;
 
 /**
  * 
@@ -14,6 +17,7 @@ import com.ymatou.restkeeper.model.pojo.FunctionParam;
  *
  */
 public interface FunctionParamService extends BaseService<FunctionParam>{
-    
+
+    List<FunctionParamVo> findByFunctionId(Long functionId);
 
 }

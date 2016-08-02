@@ -108,7 +108,7 @@ public class PaginationInterceptor extends BaseInterceptor {
                     return pageList;
                 }
             } catch (Exception e) {
-                throw new Exception("Overwrite SQL : Fail!");
+                throw new Exception("Overwrite SQL : Fail!",e);
             }
 
         }

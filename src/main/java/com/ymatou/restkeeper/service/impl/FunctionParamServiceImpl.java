@@ -6,6 +6,8 @@
  */
 package com.ymatou.restkeeper.service.impl;
 
+import com.ymatou.restkeeper.model.vo.FunctionParamVo;
+import com.ymatou.restkeeper.util.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,10 @@ import org.springframework.stereotype.Service;
 import com.ymatou.restkeeper.dao.jpa.FunctionParamRepository;
 import com.ymatou.restkeeper.model.pojo.FunctionParam;
 import com.ymatou.restkeeper.service.FunctionParamService;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -34,5 +40,15 @@ public class FunctionParamServiceImpl extends BaseServiceImpl<FunctionParam> imp
     }
 
 
-
+    @Override
+    public List<FunctionParamVo> findByFunctionId(Long functionId) {
+        List<FunctionParamVo> functionParamVoList = new ArrayList<>();
+        List<FunctionParam> paramList = repository.findByFunctionId(functionId);
+        if(!CollectionUtils.isEmpty(paramList)){
+            paramList.forEach(functionParam -> {
+                functionParamVoList.add(Converter.convert(functionParam,FunctionParamVo.class));
+            });
+        }
+        return functionParamVoList;
+    }
 }
