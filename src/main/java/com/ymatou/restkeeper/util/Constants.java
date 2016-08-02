@@ -20,9 +20,13 @@ public class Constants {
     
     public static final String HTTP_METHOD_POST = "POST";
     
-    public static final String FORMAT_STRING = "String";
+    public static final String FORMAT_STRING = "string";
     
-    public static final String FORMAT_NUMBER = "Number";
+    public static final String FORMAT_NUMBER = "number";
     
-    public static final String FORMAT_DATE = "Date";
+    public static final String FORMAT_DATE = "date";
+    
+    public static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
+    
+    public final static String APPLICATION_JSON = "application/json";
 }
