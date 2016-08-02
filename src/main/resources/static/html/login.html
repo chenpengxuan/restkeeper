@@ -36,25 +36,24 @@
   <script src="scripts/blur-admin/jquery.js"></script>
   <script type="application/javascript">
 
+    var loginUrl = "/auth";
+    var successUrl = "index.html";
     function login(){
       var usernameVal = $("#username").val();
       var passwordVal = $("#password").val();
 
       if($.trim(usernameVal) != "" && $.trim(passwordVal) != ""){
         $.ajax({
-          url: LOGINCHECK_URL,
+          url: loginUrl,
           data: $.param({
             username: usernameVal,
             password: passwordVal,
-            workId: 2
           }),
           success: function(data){
-            if(data.status == 'SUCCESS'){
-              window.location = SUCCESS_URL;
-            }else if(data.status == 'ERROR'){
-              message.text(data.message);
+            if(data.success){
+              window.location = successUrl;
             }else{
-              message.text("登陆遇未知错误！");
+              message.text(data.ms);
             }
           }
         });

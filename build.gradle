@@ -41,6 +41,7 @@ ext {
     jacksonVersion = "2.4.6"
     apacheCommonVersion = "3.4"
     snakeyamlVersion = "1.2.4.RELEASE"
+    shiroVersion = "1.2.3"
     junitVersion = "4.11"
 }
 jar {
@@ -74,6 +75,10 @@ dependencies {
 	compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
 	compile "org.apache.httpcomponents:httpmime:${httpClientVersion}"
 
+    compile "org.apache.shiro:shiro-core:${shiroVersion}"
+    compile "org.apache.shiro:shiro-spring:${shiroVersion}"
+    compile "org.apache.shiro:shiro-web:${shiroVersion}"
+
     compile "mysql:mysql-connector-java:${mysqlVersion}"
     compile "com.alibaba:fastjson:${fastJsonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
@@ -102,3 +107,11 @@ dependencies {
 task wrapper(type: Wrapper) {
     gradleVersion = "2.4"
 }
+
+//task createStartScripts(type: CreateStartScripts) {
+//    outputDir = file('build/out')
+//    mainClassName = 'com.ymatou.restkeeper.Application'
+//    applicationName = 'restkeeper'
+//    optsEnvironmentVar = '--spring.location=application.properties'
+//    classpath = configurations.runtime
+//}

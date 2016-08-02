@@ -15,4 +15,5 @@ import com.ymatou.restkeeper.model.pojo.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long>{
 
+    User findByUsernameAndPassword(String username,String password);
 }

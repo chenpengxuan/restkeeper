@@ -6,8 +6,7 @@
   'use strict';
 
   angular.module('BlurAdmin.theme.components')
-      .directive('pageTop', pageTop)
-      // .controller("pageTopCtrl",pageTopCtrl);
+      .directive('pageTop', pageTop);
 
   /** @ngInject */
   function pageTop() {
@@ -17,10 +16,5 @@
     };
   }
 
-  function pageTopCtrl($scope) {
-    $scope.signout = function () {
-      alert($scope);
-    }
-  }
 
 })();

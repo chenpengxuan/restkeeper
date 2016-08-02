@@ -15,8 +15,20 @@ angular.module('BlurAdmin', [
   'ngTouch',
   'toastr',
   'smart-table',
+  "xeditable",
   'ui.slimscroll',
 
   'BlurAdmin.theme',
   'BlurAdmin.pages'
 ]);
+
+function logout () {
+  $.ajax({
+    url: "/logout",
+    success: function(data){
+      // if(data.success){
+        window.location = "login.html";
+      // }
+    }
+  });
+}

@@ -35,4 +35,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	public Page<User> findByUser(User user, Pageable pageable) {
 		return userMapper.findByUser(user,pageable);
 	}
+
+	@Override
+	public User getUser(String username, String password) {
+		return userRepository.findByUsernameAndPassword(username,password);
+	}
 }
