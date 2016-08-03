@@ -7,6 +7,8 @@
 
 package com.ymatou.restkeeper.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +28,9 @@ public class FunctionVo {
     private List<FunctionParamVo> functionParams;   //key-value
     private String functionParam;   //json
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     private String status;
     private String appName;

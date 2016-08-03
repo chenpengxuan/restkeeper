@@ -6,6 +6,7 @@ package com.ymatou.restkeeper.contoller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ymatou.restkeeper.model.StatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -65,6 +66,7 @@ public class FunctionController {
     @RequestMapping(path = "/list")
     public Object list(FunctionVo functionVo, Pageable pageable){
 
+        functionVo.setStatus(StatusEnum.ENABLE.name());
         Page<FunctionVo> functionPage = functionService.list(functionVo,pageable);
 
         return WapperUtil.success(functionPage);
@@ -82,4 +84,15 @@ public class FunctionController {
 
         return WapperUtil.success(functionVo);
     }
+
+    @RequestMapping(path = "/delete")
+    public Object delete(Long id){
+        Function function = functionService.findById(id);
+
+        function.setStatus(StatusEnum.DISABLE.name());
+        functionService.save(function);
+
+        return WapperUtil.success("删除成功");
+    }
+
 }

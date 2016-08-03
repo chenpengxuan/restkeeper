@@ -39,9 +39,6 @@
       }).success(function (data) {
         if (data.success) {
           $scope.functionVo = data.content;
-
-
-          console.log($scope.functionVo);
         }
       });
     }
@@ -115,7 +112,14 @@
     };
 
     $scope.removeParam = function(index) {
-      $scope.functionVo.functionParams.splice(index, 1);
+      layer.confirm('确定删除吗？', {
+            btn: ['确认', '取消'] //按钮
+          }, function (i) {
+            layer.close(i);
+            $scope.functionVo.functionParams.splice(index, 1);
+          }, function () {
+          }
+      );
     };
 
     editableOptions.theme = 'bs3';
