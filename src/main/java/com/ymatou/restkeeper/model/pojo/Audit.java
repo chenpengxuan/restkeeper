@@ -14,7 +14,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ymatou.restkeeper.model.StatusEnum;
 
 /**
  *
@@ -25,11 +28,14 @@ public class Audit {
 
 
     @Column(name="create_time",updatable=false)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date createTime;
     @Column(name="update_time")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date updateTime;
+
+    @Column(name = "status")
+    protected String status;
 
     public Date getCreateTime() {
         return createTime;
@@ -52,10 +58,21 @@ public class Audit {
         setUpdateTime(new Date());
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @PrePersist
     public void PrePersist() {
         setCreateTime(new Date());
         setUpdateTime(new Date());
+        if(StringUtils.isBlank(status)){
+            setStatus(StatusEnum.ENABLE.name());
+        }
     }
 
 }

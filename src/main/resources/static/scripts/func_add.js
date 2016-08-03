@@ -19,6 +19,8 @@
   function funcAddCtrl($scope,$stateParams,$state,$http,$location, editableOptions, editableThemes,$filter) {
 
     $scope.functionVo = {
+      httpMethod:'POST',
+      contentType:'application/json',
       functionParams:[]
     };
 
@@ -26,8 +28,10 @@
     console.log($scope);
     $state.current.title = "创建功能";
     var id = $stateParams.id;
+    var isUpdate = false;
     if (id != "") {
       $state.current.title = "修改功能";
+      isUpdate = true;
       $http({
         url: "/function/get",
         method: 'GET',
@@ -42,6 +46,17 @@
       });
     }
 
+    //获取应用
+    $http({
+      url: "/application/getAll",
+      method: 'GET'
+    }).success(function (data) {
+      if (data.success) {
+        $scope.applications = data.content;
+      }
+    });
+
+
     $scope.submit = function(){
       $.ajax({
         type: "POST",
@@ -50,9 +65,17 @@
         dataType: "json",
         data: JSON.stringify($scope.functionVo),
         success: function (data) {
-          alert(data);
+          if(isUpdate){
+            $state.reload();
+          }else{
+            $state.go("app.func-list");
+          }
         }
       });
+    };
+
+    $scope.goBack = function(){
+      $state.go('app.func-list')
     };
 
     $scope.paramTypes = [
@@ -83,7 +106,6 @@
 
     $scope.addParam = function() {
       $scope.inserted = {
-        id: $scope.functionVo.functionParams.length+1,
         name: '',
         description:'',
         type: "string",

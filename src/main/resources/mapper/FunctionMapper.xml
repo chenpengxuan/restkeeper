@@ -23,29 +23,38 @@
 	</resultMap>
 	
 	<sql id="columns">
-		function_id,application_id,name,description,url,http_method,content_type,author,create_time,update_time
+		f.function_id as id,f.application_id as applicationId,
+		f.name,f.description,f.url,f.http_method as httpMethod,
+		f.content_type as contentType,f.author,
+		f.create_time as createTime,f.update_time as updateTime
 	</sql>
 	
 	<sql id="dynamicWhere">
 		<where>
-			<if test="function.id !=null "> AND function_id = #{function.id} </if>
-			<if test="function.applicationId !=null "> AND application_id = #{function.applicationId} </if>
-			<if test="function.description !=null and function.description != '' "> AND description = #{function.description} </if>
-			<if test="function.url !=null and function.url != '' "> AND url = #{function.url} </if>
-			<if test="function.httpMethod !=null and function.httpMethod != ''"> AND http_method = #{function.httpMethod} </if>
-			<if test="function.contentType !=null and function.contentType != ''"> AND content_type = #{function.contentType} </if>
-			<if test="function.author !=null and function.author != ''"> AND author = #{function.author} </if>
-			<if test="function.createTime !=null "> AND create_time = #{function.createTime} </if>
-			<if test="function.updateTime !=null "> AND update_time = #{function.updateTime} </if>
+			<if test="function.id !=null "> AND f.function_id = #{function.id} </if>
+			<if test="function.name !=null "> AND f.name like CONCAT('%',#{function.name},'%' ) </if>
+			<if test="function.applicationId !=null "> AND f.application_id = #{function.applicationId} </if>
+			<if test="function.description !=null and function.description != '' "> AND f.description = #{function.description} </if>
+			<if test="function.url !=null and function.url != '' "> AND f.url like CONCAT('%',#{function.url},'%' ) </if>
+			<if test="function.httpMethod !=null and function.httpMethod != ''"> AND f.http_method = #{function.httpMethod} </if>
+			<if test="function.contentType !=null and function.contentType != ''"> AND f.content_type = #{function.contentType} </if>
+			<if test="function.author !=null and function.author != ''"> AND f.author like CONCAT('%',#{function.author},'%' ) </if>
+			<if test="function.createTime !=null "> AND f.create_time = #{function.createTime} </if>
+			<if test="function.updateTime !=null "> AND f.update_time = #{function.updateTime} </if>
 		</where>
 	</sql>
 
 
     <select id="findByFunction" resultMap="Result">
         SELECT <include refid="columns"/>
-        FROM function
+        FROM function f
         <include refid="dynamicWhere"/>
     </select>
 
+	<select id="findByFunctionVo" resultType="com.ymatou.restkeeper.model.vo.FunctionVo">
+		SELECT <include refid="columns"/>,a.name as appName
+		FROM function f left JOIN  application a on a.application_id = f.application_id
+		<include refid="dynamicWhere"/>
+	</select>
 
 </mapper>

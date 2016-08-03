@@ -14,7 +14,11 @@
           <form novalidate>
               <pre style="padding-top: 10px;white-space: nowrap">
                   功能名称<input name="name" type="text" ng-model="func.name">
-                  &nbsp;&nbsp;应用名称<input name="appName" type="text" ng-model="func.appName">
+                  &nbsp;&nbsp;应用名称
+                <select ng-model="func.applicationId">
+                  <option value="">----请选择----</option>
+                  <option ng-repeat="s in applications" value="{{s.id}}">{{s.name}}</option>
+                </select>
                   &nbsp;&nbsp;URL<input name="url" type="text" ng-model="func.url">
                   &nbsp;&nbsp;创建人<input name="author" type="text" ng-model="func.author">
                  <!-- 角色名称
@@ -55,7 +59,10 @@
               <td>{{item.author}}</td>
               <td>{{item.createTime}}</td>
               <td>{{item.updateTime}}</td>
-              <td><a ui-sref="app.func-add({id:item.id})">修改</a></td>
+              <td>
+                <button class="btn btn-primary btn-xs" ui-sref="app.func-add({id:item.id})">Edit</button>
+                <button class="btn btn-danger btn-xs" ng-click="delete()">Delete</button>
+              </td>
             </tr>
             </tbody>
           </table>

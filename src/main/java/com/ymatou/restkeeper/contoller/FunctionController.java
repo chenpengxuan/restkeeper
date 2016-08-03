@@ -57,31 +57,15 @@ public class FunctionController {
             consumes="application/json", produces="application/json")
     public Object save(@RequestBody FunctionVo functionVo){
 
-        Function function = new Function();
-        BeanUtils.copyProperties(functionVo,function);
-        function.setApplicationId(1L);
-        function.setAuthor(CurrentUserUtil.getCurrentUser().getUsername());
-        functionService.save(function);
-
-        List<FunctionParamVo> functionParamVoList = functionVo.getFunctionParams();
-
-        List<FunctionParam> paramList = new ArrayList<>();
-        functionParamVoList.forEach(functionParamVo -> {
-            FunctionParam param = new FunctionParam();
-            BeanUtils.copyProperties(functionParamVo,param);
-            param.setFunctionId(function.getId());
-            paramList.add(param);
-        });
-
-        functionParamService.saveAll(paramList);
+        functionService.saveFunction(functionVo);
 
         return WapperUtil.success();
     }
 
     @RequestMapping(path = "/list")
-    public Object list(Function function, Pageable pageable){
+    public Object list(FunctionVo functionVo, Pageable pageable){
 
-        Page<Function> functionPage = functionService.list(function,pageable);
+        Page<FunctionVo> functionPage = functionService.list(functionVo,pageable);
 
         return WapperUtil.success(functionPage);
     }

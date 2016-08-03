@@ -25,6 +25,6 @@ public interface FunctionMapper {
 
     Page<Function> findByFunction(@Param("function") Function function, @Param("pageable") Pageable pageable);
 
-    Page<Function> findByFunction(@Param("function") FunctionVo function, @Param("pageable") Pageable pageable);
+    Page<FunctionVo> findByFunctionVo(@Param("function") FunctionVo function, @Param("pageable") Pageable pageable);
 
 }

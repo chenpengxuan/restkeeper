@@ -7,17 +7,16 @@
 package com.ymatou.restkeeper.contoller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.ymatou.restkeeper.model.pojo.Application;
 import com.ymatou.restkeeper.model.vo.AppVo;
 import com.ymatou.restkeeper.model.vo.FunctionVo;
-import com.ymatou.restkeeper.model.vo.GroupVo;
-import com.ymatou.restkeeper.model.vo.IdNameVo;
+import com.ymatou.restkeeper.service.ApplicationService;
 import com.ymatou.restkeeper.util.WapperUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/system")
-public class SystemController {
+@RequestMapping("/application")
+public class ApplicationController {
 
-    private final static Logger logger = LoggerFactory.getLogger(SystemController.class);
+    private final static Logger logger = LoggerFactory.getLogger(ApplicationController.class);
+    @Autowired
+    private ApplicationService applicationService;
 
     @RequestMapping("/list")
     public Object list() {
@@ -87,5 +88,11 @@ public class SystemController {
                         (pageable.getPageNumber() + 1) * pageable.getPageSize());
         Page<FunctionVo> page = new PageImpl<FunctionVo>(newList,pageable,list.size());
         return WapperUtil.success(page);
+    }
+
+    @RequestMapping("/getAll")
+    public Object getAll(){
+        List<Application> applications = applicationService.findAll();
+        return WapperUtil.success(applications);
     }
 }

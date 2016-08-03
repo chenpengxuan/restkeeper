@@ -22,6 +22,17 @@
     $scope.page = 1;
     $scope.pageSize = 10;
     $scope.total = 0;
+    $scope.func = {};
+
+    //获取应用
+    $http({
+      url: "/application/getAll",
+      method: 'GET'
+    }).success(function (data) {
+      if (data.success) {
+        $scope.applications = data.content;
+      }
+    });
 
     $scope.pagingAction = function(page,pageSize) {
       var param = {};
@@ -29,6 +40,11 @@
       param.size = pageSize;
       //param.name = $scope.user.name;
       //param.roleId = $scope.user.roleId;
+      param.name = $scope.func.name;
+      param.url = $scope.func.url;
+      param.author = $scope.func.author;
+      param.applicationId = $scope.func.applicationId;
+      param.sort = "f.update_time,desc";
 
       doPaging($http,"/function/list",param,function (data) {
           $scope.total = data.content.totalElements;
@@ -38,13 +54,18 @@
     $scope.pagingAction($scope.page,$scope.pageSize,$scope.total);
 
     $scope.search = function(){
-      console.log($scope);
-      console.log($state);
+      $scope.page = 1;
+      $scope.pagingAction($scope.page,$scope.pageSize);
     };
 
     $scope.createFunc = function(){
       $state.go("app.func-add");
     };
+
+    $scope.delete = function(){
+
+    };
+
   }
 
 })();

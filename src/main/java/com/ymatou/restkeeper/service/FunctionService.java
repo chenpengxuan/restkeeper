@@ -24,4 +24,8 @@ public interface FunctionService extends BaseService<Function>{
     String submit(FunctionVo function);
 
     Page<Function> list(Function function, Pageable pageable);
+
+    Page<FunctionVo> list(FunctionVo functionVo, Pageable pageable);
+
+    void saveFunction(FunctionVo functionVo);
 }

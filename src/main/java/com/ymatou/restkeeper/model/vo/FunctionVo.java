@@ -7,6 +7,7 @@
 
 package com.ymatou.restkeeper.model.vo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,11 @@ public class FunctionVo {
     private String author;
     private List<FunctionParamVo> functionParams;   //key-value
     private String functionParam;   //json
+
+    private Date createTime;
+    private Date updateTime;
+    private String status;
+    private String appName;
 
     public FunctionVo(Long id, String name) {
         this.id = id;
@@ -111,5 +117,37 @@ public class FunctionVo {
 
     public void setFunctionParam(String functionParam) {
         this.functionParam = functionParam;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 }

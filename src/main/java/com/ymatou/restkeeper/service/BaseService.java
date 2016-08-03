@@ -10,6 +10,8 @@ package com.ymatou.restkeeper.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 public interface BaseService<T>{
 
@@ -24,5 +26,7 @@ public interface BaseService<T>{
     void saveAll(Iterable<T> entities);
 
     Page<T> findByPage(Pageable pageable);
+
+    List<T> findAll();
 
 }

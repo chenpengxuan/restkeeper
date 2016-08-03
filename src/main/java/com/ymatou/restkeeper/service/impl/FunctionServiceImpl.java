@@ -5,16 +5,18 @@ package com.ymatou.restkeeper.service.impl;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.ymatou.restkeeper.dao.jpa.FunctionParamRepository;
 import com.ymatou.restkeeper.dao.mapper.FunctionMapper;
+import com.ymatou.restkeeper.model.StatusEnum;
+import com.ymatou.restkeeper.model.pojo.FunctionParam;
+import com.ymatou.restkeeper.service.FunctionParamService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,8 @@ import com.ymatou.restkeeper.service.OperationLogService;
 import com.ymatou.restkeeper.util.Constants;
 import com.ymatou.restkeeper.util.CurrentUserUtil;
 import com.ymatou.restkeeper.util.HttpClientUtil;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 
@@ -48,6 +52,10 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
 
     @Autowired
     private OperationLogService OperationLogService;
+    @Autowired
+    private FunctionParamService functionParamService;
+    @Autowired
+    private FunctionParamRepository functionParamRepository;
 
     @Autowired
     public FunctionServiceImpl(FunctionRepository functionRepository) {
@@ -147,5 +155,70 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
     @Override
     public Page<Function> list(Function function, Pageable pageable) {
         return functionMapper.findByFunction(function,pageable);
+    }
+
+    @Override
+    public Page<FunctionVo> list(FunctionVo functionVo, Pageable pageable) {
+        return functionMapper.findByFunctionVo(functionVo,pageable);
+    }
+    @Transactional
+    @Override
+    public void saveFunction(FunctionVo functionVo) {
+
+        List<FunctionParamVo> functionParamVoList = functionVo.getFunctionParams();
+
+        List<FunctionParam> paramList = new ArrayList<>();
+        if (functionVo.getId() == null) {// 新增
+            Function function = new Function();
+            BeanUtils.copyProperties(functionVo, function);
+            function.setAuthor(CurrentUserUtil.getCurrentUser().getUsername());
+            save(function);
+
+            if (!CollectionUtils.isEmpty(functionParamVoList)) {
+                functionParamVoList.forEach(functionParamVo -> {
+                    FunctionParam param = new FunctionParam();
+                    BeanUtils.copyProperties(functionParamVo, param);
+                    param.setFunctionId(function.getId());
+                    paramList.add(param);
+                });
+                functionParamService.saveAll(paramList);
+            }
+
+        } else {// 修改
+            Function oldFunction = findById(functionVo.getId());
+            oldFunction.setContentType(functionVo.getContentType());
+            oldFunction.setHttpMethod(functionVo.getHttpMethod());
+            oldFunction.setDescription(functionVo.getDescription());
+            oldFunction.setName(functionVo.getName());
+            oldFunction.setUrl(functionVo.getUrl());
+            save(oldFunction);
+
+            //将所有param 设置为不可用
+            functionParamRepository.disableParamByFunctionId(oldFunction.getId());
+
+            if (!CollectionUtils.isEmpty(functionParamVoList)) {
+                functionParamVoList.forEach(functionParamVo -> {
+                    FunctionParam param = new FunctionParam();
+                    if (functionParamVo.getId() != null) {// 修改
+                        param = functionParamService.findById(functionParamVo.getId());
+                        param.setName(functionParamVo.getName());
+                        param.setDescription(functionParamVo.getDescription());
+                        param.setDescription(functionParamVo.getDescription());
+                        param.setArray(functionParamVo.isArray());
+                        param.setFormat(functionParamVo.getFormat());
+                        param.setType(functionParamVo.getType());
+                        param.setStatus(StatusEnum.ENABLE.name());
+                    } else {
+                        BeanUtils.copyProperties(functionParamVo, param);
+                        param.setFunctionId(oldFunction.getId());
+                        param.setStatus(StatusEnum.ENABLE.name());
+                    }
+                    paramList.add(param);
+
+                });
+
+                functionParamService.saveAll(paramList);
+            }
+        }
     }
 }

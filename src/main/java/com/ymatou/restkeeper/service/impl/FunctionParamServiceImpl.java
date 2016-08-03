@@ -6,6 +6,7 @@
  */
 package com.ymatou.restkeeper.service.impl;
 
+import com.ymatou.restkeeper.model.StatusEnum;
 import com.ymatou.restkeeper.model.vo.FunctionParamVo;
 import com.ymatou.restkeeper.util.Converter;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class FunctionParamServiceImpl extends BaseServiceImpl<FunctionParam> imp
     @Override
     public List<FunctionParamVo> findByFunctionId(Long functionId) {
         List<FunctionParamVo> functionParamVoList = new ArrayList<>();
-        List<FunctionParam> paramList = repository.findByFunctionId(functionId);
+        List<FunctionParam> paramList = repository.findByFunctionIdAndStatus(functionId, StatusEnum.ENABLE.name());
         if(!CollectionUtils.isEmpty(paramList)){
             paramList.forEach(functionParam -> {
                 functionParamVoList.add(Converter.convert(functionParam,FunctionParamVo.class));

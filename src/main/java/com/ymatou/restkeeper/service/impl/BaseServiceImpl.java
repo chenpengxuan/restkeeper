@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public class BaseServiceImpl<T> implements BaseService<T> {
 
     protected JpaRepository jpaRepository;
@@ -53,5 +55,10 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     @Override
     public Page<T> findByPage(Pageable pageable) {
         return jpaRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<T> findAll() {
+        return jpaRepository.findAll();
     }
 }

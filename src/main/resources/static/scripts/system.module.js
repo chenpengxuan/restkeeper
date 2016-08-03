@@ -20,7 +20,7 @@
 
         //todo 根据数据库查义菜单
         $.ajax({
-            url: "/system/list",
+            url: "/application/list",
             success: function(data){
                 console.log(data);
                 if(data.success){
