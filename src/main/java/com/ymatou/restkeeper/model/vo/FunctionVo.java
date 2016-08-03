@@ -16,6 +16,7 @@ public class FunctionVo {
 
     private Long id;
     private String name;
+    private Long applicationId;
     private String description;
     private String url;
     private String httpMethod;
@@ -58,6 +59,14 @@ public class FunctionVo {
 
     public String getUrl() {
         return url;
+    }
+
+    public Long getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 
     public void setUrl(String url) {

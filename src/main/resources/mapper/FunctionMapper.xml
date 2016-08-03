@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /*
+  ~  (C) Copyright 2016 Ymatou (http://www.ymatou.com/).
+  ~  All rights reserved.
+  ~  */
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymatou.restkeeper.dao.mapper.FunctionMapper">
+
+	<resultMap id="Result" type="com.ymatou.restkeeper.model.pojo.Function">
+		<id property="id" column="function_id" />
+		<result property="applicationId" column="application_id" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="url" column="url" />
+		<result property="httpMethod" column="http_method" />
+		<result property="contentType" column="content_type" />
+		<result property="author" column="author" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+	
+	<sql id="columns">
+		function_id,application_id,name,description,url,http_method,content_type,author,create_time,update_time
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="function.id !=null "> AND function_id = #{function.id} </if>
+			<if test="function.applicationId !=null "> AND application_id = #{function.applicationId} </if>
+			<if test="function.description !=null and function.description != '' "> AND description = #{function.description} </if>
+			<if test="function.url !=null and function.url != '' "> AND url = #{function.url} </if>
+			<if test="function.httpMethod !=null and function.httpMethod != ''"> AND http_method = #{function.httpMethod} </if>
+			<if test="function.contentType !=null and function.contentType != ''"> AND content_type = #{function.contentType} </if>
+			<if test="function.author !=null and function.author != ''"> AND author = #{function.author} </if>
+			<if test="function.createTime !=null "> AND create_time = #{function.createTime} </if>
+			<if test="function.updateTime !=null "> AND update_time = #{function.updateTime} </if>
+		</where>
+	</sql>
+
+
+    <select id="findByFunction" resultMap="Result">
+        SELECT <include refid="columns"/>
+        FROM function
+        <include refid="dynamicWhere"/>
+    </select>
+
+
+</mapper>

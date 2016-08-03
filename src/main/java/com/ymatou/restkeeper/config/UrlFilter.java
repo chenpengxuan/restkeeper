@@ -6,6 +6,7 @@
 
 package com.ymatou.restkeeper.config;
 
+import com.ymatou.restkeeper.util.ThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,6 +28,8 @@ public class UrlFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        // 初始化会话
+        ThreadContext.init();
         logger.info("request url:{}",request.getRequestURL());
     }
 }

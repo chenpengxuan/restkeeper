@@ -30,7 +30,7 @@
       //param.name = $scope.user.name;
       //param.roleId = $scope.user.roleId;
 
-      doPaging($http,"/system/listFunc",param,function (data) {
+      doPaging($http,"/function/list",param,function (data) {
           $scope.total = data.content.totalElements;
           $scope.funcList = data.content.content;
       });
@@ -38,10 +38,13 @@
     $scope.pagingAction($scope.page,$scope.pageSize,$scope.total);
 
     $scope.search = function(){
-      console.log($scope)
-      console.log($state)
-      // this.$state.go("app.func-add");
-    }
+      console.log($scope);
+      console.log($state);
+    };
+
+    $scope.createFunc = function(){
+      $state.go("app.func-add");
+    };
   }
 
 })();

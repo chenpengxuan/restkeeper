@@ -10,7 +10,7 @@ package com.ymatou.restkeeper.model.vo;
  */
 public class FunctionParamVo {
     
-    private Long paramId;
+    private Long id;
     private Long functionId;
     private String name;
     private String type;
@@ -19,13 +19,15 @@ public class FunctionParamVo {
     private String description;
     private String defaultValue;
     private Object value;
-    
-    public Long getParamId() {
-        return paramId;
+
+    public Long getId() {
+        return id;
     }
-    public void setParamId(Long paramId) {
-        this.paramId = paramId;
+
+    public void setId(Long id) {
+        this.id = id;
     }
+
     public Long getFunctionId() {
         return functionId;
     }

@@ -12,9 +12,9 @@
     <td>默认值</td>
     <td>操作</td>
   </tr>
-  <tr ng-repeat="funcParam in functionParams" class="editable-row">
+  <tr ng-repeat="funcParam in functionVo.functionParams" class="editable-row">
     <td>
-        {{funcParam.paramId}}
+        {{funcParam.id}}
     </td>
     <td>
         <span editable-text="funcParam.name" e-name="name" e-form="rowform" e-required>

@@ -5,6 +5,8 @@ package com.ymatou.restkeeper.service;
 
 import com.ymatou.restkeeper.model.pojo.Function;
 import com.ymatou.restkeeper.model.vo.FunctionVo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -20,4 +22,6 @@ public interface FunctionService extends BaseService<Function>{
      * @return
      */
     String submit(FunctionVo function);
+
+    Page<Function> list(Function function, Pageable pageable);
 }

@@ -11,10 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.ymatou.restkeeper.dao.mapper.FunctionMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -40,6 +43,8 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
     private static final Logger logger = LoggerFactory.getLogger(FunctionServiceImpl.class);
 
     private FunctionRepository functionRepository;
+    @Autowired
+    private FunctionMapper functionMapper;
 
     @Autowired
     private OperationLogService OperationLogService;
@@ -139,4 +144,8 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
         return operationLog;
     }
 
+    @Override
+    public Page<Function> list(Function function, Pageable pageable) {
+        return functionMapper.findByFunction(function,pageable);
+    }
 }

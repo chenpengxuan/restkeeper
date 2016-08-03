@@ -6,11 +6,12 @@ package com.ymatou.restkeeper.contoller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ymatou.restkeeper.util.CurrentUserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import com.ymatou.restkeeper.model.vo.FunctionParamVo;
 import com.ymatou.restkeeper.model.vo.FunctionVo;
 import com.ymatou.restkeeper.service.FunctionParamService;
 import com.ymatou.restkeeper.service.FunctionService;
+import com.ymatou.restkeeper.util.CurrentUserUtil;
 import com.ymatou.restkeeper.util.WapperUtil;
 
 /**
@@ -73,8 +75,27 @@ public class FunctionController {
 
         functionParamService.saveAll(paramList);
 
-        System.out.println(functionVo);
-        return null;
+        return WapperUtil.success();
     }
 
+    @RequestMapping(path = "/list")
+    public Object list(Function function, Pageable pageable){
+
+        Page<Function> functionPage = functionService.list(function,pageable);
+
+        return WapperUtil.success(functionPage);
+    }
+
+
+    @RequestMapping(path = "/get")
+    public Object get(Long id){
+        Function function = functionService.findById(id);
+
+        FunctionVo functionVo = new FunctionVo();
+        BeanUtils.copyProperties(function,functionVo);
+
+        functionVo.setFunctionParams(functionParamService.findByFunctionId(id));
+
+        return WapperUtil.success(functionVo);
+    }
 }
