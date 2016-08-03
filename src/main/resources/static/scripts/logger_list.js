@@ -22,7 +22,7 @@
     $scope.page = 1;
     $scope.pageSize = 10;
     $scope.total = 0;
-    $scope.func = {};
+    $scope.logger = {};
 
     //获取应用
     $http({
@@ -38,12 +38,11 @@
       var param = {};
       param.page = page;
       param.size = pageSize;
-      //param.name = $scope.user.name;
-      //param.roleId = $scope.user.roleId;
-//      param.name = $scope.logger.name;
-//      param.url = $scope.logger.url;
-//      param.author = $scope.logger.userName;
-      param.applicationId = $scope.func.applicationId;
+
+      param.name = $scope.logger.name;
+      param.url = $scope.logger.url;
+      param.userName = $scope.logger.userName;
+      param.applicationId = $scope.logger.applicationId;
       param.sort = "o.update_time,desc";
 
       doPaging($http,"/logger/list",param,function (data) {
