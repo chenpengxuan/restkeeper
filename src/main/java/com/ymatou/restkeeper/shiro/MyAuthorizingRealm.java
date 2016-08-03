@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ymatou.restkeeper.exception.BaseRunTimeException;
 import com.ymatou.restkeeper.model.pojo.User;
 import com.ymatou.restkeeper.service.UserService;
+import com.ymatou.restkeeper.util.LdapHelper;
 
 
 public class MyAuthorizingRealm extends AuthorizingRealm {
@@ -37,20 +38,21 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken authcToken = (UsernamePasswordToken) token;
-
-        String email = authcToken.getUsername();
+        String userName = authcToken.getUsername();
         String password = String.valueOf(authcToken.getPassword());
+        logger.info("login userName: " + userName);
+        
+        if(LdapHelper.authenticate(userName, password)){
+            return new SimpleAuthenticationInfo(userName, password, getName());
+        }else{
+            if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
+                User user = userService.getUser(userName, password);
 
-        logger.info("login email : "+email);
-
-        if(StringUtils.isNotBlank(email) && StringUtils.isNotBlank(password)){
-            User user = userService.getUser(email, password);
-
-            if(user != null){
-
-                return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
-            }else {
-                throw new BaseRunTimeException("用户名或密码错误");
+                if(user != null){
+                    return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
+                }else {
+                    throw new BaseRunTimeException("用户名或密码错误");
+                }
             }
         }
 

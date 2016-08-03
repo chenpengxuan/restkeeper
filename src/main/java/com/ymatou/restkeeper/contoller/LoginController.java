@@ -27,9 +27,9 @@ import com.ymatou.restkeeper.util.WapperUtil;
 
 @RestController
 @RequestMapping("")
-public class loginController {
+public class LoginController {
 
-    private final static Logger logger = LoggerFactory.getLogger(loginController.class);
+    private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private UserService userService;
@@ -53,7 +53,7 @@ public class loginController {
 
             // 登录Token验证
             String md5Password = CipherUtil.encryptMD5(password);
-            UsernamePasswordToken token = new UsernamePasswordToken(username, md5Password, true);
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password, true);
 
             try {
                 currentUser.login(token);
@@ -62,7 +62,14 @@ public class loginController {
                 if(currentUser.isAuthenticated()) {
 
                     // 获取已认证用户User
-                    User user = userService.getUser(username, md5Password);
+                    User user = userService.getUser(username);
+                    
+                    if(user == null){
+                        user = new User();
+                        user.setUsername(username);
+                        user.setPassword(md5Password);
+                        userService.save(user);
+                    }
 
                     // 增加用户的相关数据进入Session
                     addUserInfoToSession(user);

@@ -25,7 +25,7 @@ public class LdapHelper {
     public static boolean authenticate(String userName, String password) {
         Hashtable<String, String> env = new Hashtable<>();
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
-        env.put(Context.SECURITY_PRINCIPAL, userName);
+        env.put(Context.SECURITY_PRINCIPAL, "YMT\\" + userName);
         env.put(Context.SECURITY_CREDENTIALS, password);
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.PROVIDER_URL, "ldap://ymt-ad-01.ymt.corp");

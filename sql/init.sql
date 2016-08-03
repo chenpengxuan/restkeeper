@@ -48,6 +48,7 @@ create table user(
     create_time datetime not null comment "创建时间",
     update_time datetime not null comment "修改时间"
 );
+create unique index Idx_User_UserName on user(user_name);
 
 create table operation_log(
 	  log_id int auto_increment primary key comment "操作日志ID",
