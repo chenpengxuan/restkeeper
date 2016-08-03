@@ -40,15 +40,15 @@
       param.size = pageSize;
       //param.name = $scope.user.name;
       //param.roleId = $scope.user.roleId;
-      param.name = $scope.func.name;
-      param.url = $scope.func.url;
-      param.author = $scope.func.author;
+//      param.name = $scope.logger.name;
+//      param.url = $scope.logger.url;
+//      param.author = $scope.logger.userName;
       param.applicationId = $scope.func.applicationId;
-      param.sort = "f.update_time,desc";
+      param.sort = "o.update_time,desc";
 
-      doPaging($http,"/function/list",param,function (data) {
+      doPaging($http,"/logger/list",param,function (data) {
           $scope.total = data.content.totalElements;
-          $scope.funcList = data.content.content;
+          $scope.loggerList = data.content.content;
       });
     };
     $scope.pagingAction($scope.page,$scope.pageSize,$scope.total);
@@ -57,37 +57,6 @@
       $scope.page = 1;
       $scope.pagingAction($scope.page,$scope.pageSize);
     };
-
-    $scope.createFunc = function(){
-      $state.go("app.func-add");
-    };
-
-    $scope.delete = function(id){
-
-      layer.confirm('确定删除吗？', {
-            btn: ['确认', '取消'] //按钮
-          }, function (i) {
-            layer.close(i);
-
-            $http({
-              url: "/function/delete",
-              method: 'GET',
-              params: {id: id}
-            }).success(function (data) {
-              if (data.success) {
-                layer.alert(data.message,{closeBtn: 0},function (index) {
-                  $scope.search();//删除先再次查询
-                  layer.close(index)
-                });
-              }
-            });
-          }, function () {
-          }
-      );
-
-
-    };
-
   }
 
 })();

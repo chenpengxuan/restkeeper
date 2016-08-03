@@ -141,10 +141,9 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
 
     private OperationLog generateOperationLog(FunctionVo function, String request, String response) {
         OperationLog operationLog = new OperationLog();
-        operationLog.setCreateTime(new Date());
-        operationLog.setUpdateTime(new Date());
         operationLog.setOperateTime(new Date());
         operationLog.setFunctionId(function.getId());
+        operationLog.setApplicationId(function.getApplicationId());
         operationLog.setRequest(request);
         operationLog.setResponse(response);
         operationLog.setUserId(CurrentUserUtil.getCurrentUserId());

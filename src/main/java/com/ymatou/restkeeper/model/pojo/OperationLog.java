@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 
  * @author qianmin 2016年8月2日 上午10:50:29
@@ -29,6 +31,9 @@ public class OperationLog extends Audit {
 
     @Column(name = "function_id")
     protected Long functionId;
+    
+    @Column(name = "application_id")
+    protected Long applicationId;
 
     @Column(name = "request")
     protected String request;
@@ -93,5 +98,13 @@ public class OperationLog extends Audit {
 
     public void setOperateTime(Date operateTime) {
         this.operateTime = operateTime;
+    }
+
+    public Long getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 }

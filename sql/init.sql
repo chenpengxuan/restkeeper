@@ -34,7 +34,7 @@ create table function_param(
 	description varchar(255) comment "参数描述",
 	default_value varchar(255) comment "默认值",
 	status varchar(20) comment "状态 ENABLE,DISABLE",
-  create_time datetime not null comment "创建时间",
+  	create_time datetime not null comment "创建时间",
     update_time datetime not null comment "修改时间"
 );
 
@@ -51,13 +51,14 @@ create table user(
 create unique index Idx_User_UserName on user(user_name);
 
 create table operation_log(
-	  log_id int auto_increment primary key comment "操作日志ID",
+	log_id int auto_increment primary key comment "操作日志ID",
     user_id int not null comment "执行操作的用户ID",
     user_name varchar(32) not null comment "执行操作的用户名",
-	  function_id int not null comment "操作的功能ID",
+	function_id int not null comment "操作的功能ID",
+    application_id int not null comment "操作功能所属系统",
     operate_time datetime comment "操作时间",
-    request varchar(1024) comment "操作的请求参数",
-    response varchar(1024) comment "操作的应答报文",
+    request text comment "操作的请求参数",
+    response text comment "操作的应答报文",
     status varchar(20) comment "状态 ENABLE,DISABLE",
     create_time datetime not null comment "创建时间",
     update_time datetime not null comment "修改时间"

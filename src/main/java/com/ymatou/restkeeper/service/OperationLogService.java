@@ -3,7 +3,11 @@
  */
 package com.ymatou.restkeeper.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.ymatou.restkeeper.model.pojo.OperationLog;
+import com.ymatou.restkeeper.model.vo.OperationLogVo;
 
 /**
  * 
@@ -11,5 +15,6 @@ import com.ymatou.restkeeper.model.pojo.OperationLog;
  *
  */
 public interface OperationLogService extends BaseService<OperationLog>{
-    
+  
+    Page<OperationLogVo> findByOperationLogVo(OperationLogVo operationLog, Pageable pageable);
 }
