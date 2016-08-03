@@ -22,8 +22,8 @@
             .state('logger', {
                 url: '/logger',
                 title: '操作日志',
-                templateUrl: 'func-list.html',
-                controller: 'funcListCtrl',
+                templateUrl: 'logger-list.html',
+                controller: 'loggerListCtrl',
                 sidebarMeta: {
                     icon: 'ion-grid',
                     order: 300,

@@ -12,11 +12,11 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.app')
-      .controller('loggerListCtrl', funcListCtrl);
+  angular.module('BlurAdmin.pages.logger')
+      .controller('loggerListCtrl', loggerListCtrl);
 
   /** @ngInject */
-  function funcListCtrl($scope, $state,$http) {
+  function loggerListCtrl($scope, $state,$http) {
 
 
     $scope.page = 1;
