@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  *
  */
 public class OperationLogVo {
-    
+
     private Long id;
     private Long userId;
     private String userName;
@@ -30,6 +30,10 @@ public class OperationLogVo {
     private String status;
     private String appName;
     private String functionName;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
 
     public Long getId() {
         return id;
@@ -134,4 +138,21 @@ public class OperationLogVo {
     public void setFunctionName(String functionName) {
         this.functionName = functionName;
     }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
 }

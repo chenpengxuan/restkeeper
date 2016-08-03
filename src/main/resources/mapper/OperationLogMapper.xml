@@ -31,17 +31,25 @@
 	
 	<sql id="dynamicWhere">
 		<where>
-			<if test="operationLog.id !=null "> AND log_id = #{operationLog.id} </if>
-			<if test="operationLog.userId !=null "> AND user_id = #{operationLog.userId} </if>
-			<if test="operationLog.userName !=null "> AND user_name = #{operationLog.userName} </if>
-			<if test="operationLog.functionId !=null "> AND function_id = #{operationLog.functionId} </if>
-			<if test="operationLog.applicationId !=null "> AND application_id = #{operationLog.applicationId} </if>
-			<if test="operationLog.request !=null "> AND request = #{operationLog.request} </if>
-			<if test="operationLog.response !=null "> AND response = #{operationLog.response} </if>
-			<if test="operationLog.status !=null "> AND status = #{operationLog.status} </if>
-			<if test="operationLog.operateTime !=null "> AND operate_time = #{operationLog.operateTime} </if>
-			<if test="operationLog.createTime !=null "> AND create_time = #{operationLog.createTime} </if>
-			<if test="operationLog.updateTime !=null "> AND update_time = #{operationLog.updateTime} </if>
+			<if test="operationLog.id !=null "> AND o.log_id = #{operationLog.id} </if>
+			<if test="operationLog.userId !=null "> AND o.user_id = #{operationLog.userId} </if>
+			<if test="operationLog.functionId !=null "> AND o.function_id = #{operationLog.functionId} </if>
+			<if test="operationLog.request !=null "> AND o.request = #{operationLog.request} </if>
+			<if test="operationLog.response !=null "> AND o.response = #{operationLog.response} </if>
+			<if test="operationLog.status !=null "> AND o.status = #{operationLog.status} </if>
+			<if test="operationLog.operateTime !=null "> AND o.operate_time = #{operationLog.operateTime} </if>
+			<if test="operationLog.createTime !=null "> AND o.create_time = #{operationLog.createTime} </if>
+			<if test="operationLog.updateTime !=null "> AND o.update_time = #{operationLog.updateTime} </if>
+			
+			<if test="operationLog.applicationId !=null "> AND o.application_id = #{operationLog.applicationId} </if>
+			<if test="operationLog.userName !=null "> AND o.user_name like CONCAT('%',#{operationLog.userName},'%' ) </if>
+			<if test="operationLog.functionName !=null "> AND f.name like CONCAT('%',#{function.name},'%' ) </if>
+			<if test="operationLog.startTime != null">
+				<![CDATA[ AND o.operate_time > #{operationLog.startTime} ]]> 
+			</if>
+			<if test="operationLog.endTime != null">  
+				<![CDATA[ AND o.operate_time < #{operationLog.endTime} ]]> 
+			</if>
 		</where>
 	</sql>
 
