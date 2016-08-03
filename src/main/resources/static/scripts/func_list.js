@@ -62,7 +62,29 @@
       $state.go("app.func-add");
     };
 
-    $scope.delete = function(){
+    $scope.delete = function(id){
+
+      layer.confirm('确定删除吗？', {
+            btn: ['确认', '取消'] //按钮
+          }, function (i) {
+            layer.close(i);
+
+            $http({
+              url: "/function/delete",
+              method: 'GET',
+              params: {id: id}
+            }).success(function (data) {
+              if (data.success) {
+                layer.alert(data.message,{closeBtn: 0},function (index) {
+                  $scope.search();//删除先再次查询
+                  layer.close(index)
+                });
+              }
+            });
+          }, function () {
+          }
+      );
+
 
     };
 

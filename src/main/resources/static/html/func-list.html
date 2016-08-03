@@ -61,7 +61,7 @@
               <td>{{item.updateTime}}</td>
               <td>
                 <button class="btn btn-primary btn-xs" ui-sref="app.func-add({id:item.id})">Edit</button>
-                <button class="btn btn-danger btn-xs" ng-click="delete()">Delete</button>
+                <button class="btn btn-danger btn-xs" ng-click="delete(item.id)">Delete</button>
               </td>
             </tr>
             </tbody>

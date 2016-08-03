@@ -18,6 +18,7 @@
 		<result property="httpMethod" column="http_method" />
 		<result property="contentType" column="content_type" />
 		<result property="author" column="author" />
+		<result property="status" column="status" />
 		<result property="createTime" column="create_time" />
 		<result property="updateTime" column="update_time" />
 	</resultMap>
@@ -25,7 +26,7 @@
 	<sql id="columns">
 		f.function_id as id,f.application_id as applicationId,
 		f.name,f.description,f.url,f.http_method as httpMethod,
-		f.content_type as contentType,f.author,
+		f.content_type as contentType,f.author,f.status,
 		f.create_time as createTime,f.update_time as updateTime
 	</sql>
 	
@@ -39,6 +40,7 @@
 			<if test="function.httpMethod !=null and function.httpMethod != ''"> AND f.http_method = #{function.httpMethod} </if>
 			<if test="function.contentType !=null and function.contentType != ''"> AND f.content_type = #{function.contentType} </if>
 			<if test="function.author !=null and function.author != ''"> AND f.author like CONCAT('%',#{function.author},'%' ) </if>
+			<if test="function.status !=null and function.status != ''"> AND f.status = #{function.status} </if>
 			<if test="function.createTime !=null "> AND f.create_time = #{function.createTime} </if>
 			<if test="function.updateTime !=null "> AND f.update_time = #{function.updateTime} </if>
 		</where>
