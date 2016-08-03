@@ -11,6 +11,7 @@
     'BlurAdmin.pages.dashboard',
     'BlurAdmin.pages.app',
     'BlurAdmin.pages.system',
+    'BlurAdmin.pages.logger'
   ])
       .config(routeConfig).run(function($rootScope, $state, $stateParams) {
         $rootScope.$state = $state;
@@ -21,7 +22,7 @@
           $rootScope.previousState_params = fromParams;
         });
         //back button function called from back button's ng-click="back()"
-        $rootScope.back = function() {//ÊµÏÖ·µ»ØµÄº¯Êý
+        $rootScope.back = function() {//Êµï¿½Ö·ï¿½ï¿½ØµÄºï¿½ï¿½ï¿½
           $state.go($rootScope.previousState_name,$rootScope.previousState_params);
         };
       });

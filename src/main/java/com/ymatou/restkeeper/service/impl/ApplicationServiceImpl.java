@@ -6,12 +6,17 @@
  */
 package com.ymatou.restkeeper.service.impl;
 
+import com.ymatou.restkeeper.model.vo.AppVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ymatou.restkeeper.dao.jpa.ApplicationRepository;
 import com.ymatou.restkeeper.model.pojo.Application;
 import com.ymatou.restkeeper.service.ApplicationService;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -25,4 +30,16 @@ public class ApplicationServiceImpl extends BaseServiceImpl<Application> impleme
         this.repository = repository;
     }
 
+    @Override
+    public List<AppVo> listAppForMenu() {
+        List<Application> applicationList = repository.findAll();
+        List<AppVo> appVoList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(applicationList)){
+            applicationList.forEach(application -> {
+//                AppVo appVo = new AppVo()
+
+            });
+        }
+        return null;
+    }
 }

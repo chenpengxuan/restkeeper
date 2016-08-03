@@ -7,6 +7,9 @@
 package com.ymatou.restkeeper.service;
 
 import com.ymatou.restkeeper.model.pojo.Application;
+import com.ymatou.restkeeper.model.vo.AppVo;
+
+import java.util.List;
 
 /**
  * 
@@ -14,5 +17,7 @@ import com.ymatou.restkeeper.model.pojo.Application;
  *
  */
 public interface ApplicationService extends BaseService<Application>{
-    
+
+    List<AppVo> listAppForMenu();
+
 }

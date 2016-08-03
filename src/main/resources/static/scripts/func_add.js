@@ -24,8 +24,6 @@
       functionParams:[]
     };
 
-    console.log($state);
-    console.log($scope);
     $state.current.title = "创建功能";
     var id = $stateParams.id;
     var isUpdate = false;
