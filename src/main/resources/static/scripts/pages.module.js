@@ -10,7 +10,7 @@
 
     'BlurAdmin.pages.dashboard',
     'BlurAdmin.pages.app',
-    'BlurAdmin.pages.system',
+    'BlurAdmin.pages.appMenu',
     'BlurAdmin.pages.logger'
   ])
       .config(routeConfig).run(function($rootScope, $state, $stateParams) {

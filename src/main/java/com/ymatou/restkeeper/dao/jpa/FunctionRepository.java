@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ymatou.restkeeper.model.pojo.Function;
 
+import java.util.List;
+
 /**
  * 
  * @author qianmin 2016年8月2日 下午2:35:52
@@ -16,4 +18,5 @@ import com.ymatou.restkeeper.model.pojo.Function;
 @Repository
 public interface FunctionRepository extends JpaRepository<Function,Long>{
 
+    List<Function> findByApplicationIdAndStatus(Long applicationId,String status);
 }
