@@ -92,7 +92,7 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
                 throw new Exception("ContentType not supported.");
             }
         } catch (Exception e) {
-            logger.error("submit request failed. ", e);
+            logger.error("submit request failed.", e);
             response = e.toString();
         }
 

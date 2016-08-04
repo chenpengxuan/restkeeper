@@ -28,9 +28,9 @@ public class LoggerCotroller {
 
     @RequestMapping(path = "/list")
     public Object listLogger(OperationLogVo operationLog, Pageable pageable) {
-        
+
         Page<OperationLogVo> operationLogVoPage = operationLogService.findByOperationLogVo(operationLog, pageable);
-        
+
         return WapperUtil.success(operationLogVoPage);
     }
 }

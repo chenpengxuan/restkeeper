@@ -15,36 +15,8 @@
   angular.module('BlurAdmin.pages.logger')
       .controller('loggerListCtrl', loggerListCtrl);
   
-
-	var start = {
-		elem : '#start',
-		format : 'YYYY/MM/DD hh:mm:ss',
-		min : laydate.now(), // 设定最小日期为当前日期
-		max : '2099-06-16 23:59:59', // 最大日期
-		istime : true,
-		istoday : false,
-		choose : function(datas) {
-			end.min = datas; // 开始日选好后，重置结束日的最小日期
-			end.start = datas // 将结束日的初始值设定为开始日
-		}
-	};
-	var end = {
-		    elem: '#end',
-		    format: 'YYYY/MM/DD hh:mm:ss',
-		    min: laydate.now(),
-		    max: '2099-06-16 23:59:59',
-		    istime: true,
-		    istoday: false,
-		    choose: function(datas){
-		        start.max = datas; //结束日选好后，重置开始日的最大日期
-		    }
-		};
-	laydate(start);
-	laydate(end);
-
   /** @ngInject */
   function loggerListCtrl($scope, $state,$http) {
-
 
     $scope.page = 1;
     $scope.pageSize = 10;
@@ -69,8 +41,12 @@
       param.functionName = $scope.logger.functionName;
       param.userName = $scope.logger.userName;
       param.applicationId = $scope.logger.applicationId;
-      param.startTime = $scope.logger.startTime;
-      param.endTime = $scope.logger.endTime;
+      if(typeof($("#startTime")[0]) != "undefined"){
+    	  param.startTime = $("#startTime")[0].value;
+      }
+      if(typeof($("#endTime")[0]) != "undefined"){
+    	  param.endTime = $("#endTime")[0].value;
+      }
       param.sort = "o.update_time,desc";
 
       doPaging($http,"/logger/list",param,function (data) {
@@ -84,6 +60,7 @@
       $scope.page = 1;
       $scope.pagingAction($scope.page,$scope.pageSize);
     };
+
   }
 
 })();
