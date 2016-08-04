@@ -22,7 +22,7 @@
           $rootScope.previousState_params = fromParams;
         });
         //back button function called from back button's ng-click="back()"
-        $rootScope.back = function() {//ʵ�ַ��صĺ���
+        $rootScope.back = function() {
           $state.go($rootScope.previousState_name,$rootScope.previousState_params);
         };
       });

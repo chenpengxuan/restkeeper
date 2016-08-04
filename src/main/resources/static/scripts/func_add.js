@@ -115,6 +115,7 @@
           }, function (i) {
             layer.close(i);
             $scope.functionVo.functionParams.splice(index, 1);
+            $scope.$apply();//需要手动刷新
           }, function () {
           }
       );

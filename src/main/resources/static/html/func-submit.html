@@ -14,22 +14,27 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">名称:</label>
                     <div class="col-sm-4">
-                        {{functionVo.name}}
+                        <input class="form-control" ng-model="functionVo.name" id="name" readonly/>
                     </div>
                     <label class="col-sm-2 control-label">URL:</label>
                     <div class="col-sm-4">
-                        {{functionVo.url}}
+                        <input class="form-control" ng-model="functionVo.url" id="url"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">提交方式:</label>
                     <div class="col-sm-4">
-                        <!--<input class="form-control" ng-model="functionVo.httpMethod" id="httpMethod" disabled/>-->
-                        {{functionVo.httpMethod}}
+                        <select class="form-control" ng-model="functionVo.httpMethod" id="httpMethod" >
+                            <option value="POST">POST</option>
+                            <option value="GET">GET</option>
+                        </select>
                     </div>
                     <label class="col-sm-2 control-label" >内容类型:</label>
                     <div class="col-sm-4">
-                        {{functionVo.contentType}}
+                        <select class="form-control" ng-model="functionVo.contentType" id="contentType" >
+                            <option value="application/json">application/json</option>
+                            <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -43,9 +48,10 @@
 
     <div ba-panel ba-panel-title="功能参数设置" ba-panel-class="with-scroll">
         <div class="form-group" ng-repeat="funcParam in functionVo.functionParams">
-            <label class="col-sm-1">{{funcParam.description}}</label>
-            <div class="col-sm-11" >
-                <input class="form-control" type="text" ng-model="funcParam.value"/>
+            <label class="col-sm-2">{{funcParam.description}} [{{funcParam.name}}]</label>
+            <div class="col-sm-10" >
+                <input class="form-control" ng-if="!funcParam.array" type="text" ng-model="funcParam.value"/>
+                <input type="text" tag-input="primary" ng-if="funcParam.array" ng-model="funcParam.value"  data-role="tagsinput">
             </div>
         </div>
     </div>
@@ -58,23 +64,30 @@
         </uib-accordion-group>
     </uib-accordion>
 
+    <div class="form-group" style="text-align:center;margin-top:30px;">
+        <button type="button" ng-click="submit()" class="btn btn-primary btn-lg ">发送</button>
+    </div>
     <div class="form-group">
         <div class="col-sm-6">
             <uib-accordion>
                 <uib-accordion-group heading="REQUEST" id="request" panel-class="panel-primary bootstrap-panel accordion-panel">
-                    <json-formatter json="functionVo.requestStr"></json-formatter>
+                    <!--<json-formatter json="functionVo.requestStr"></json-formatter>-->
+                    <div id="requestCanvas" class="Canvas">
+                        {{functionVo.requestStr}}
+                    </div>
                 </uib-accordion-group>
             </uib-accordion>
         </div>
         <div class="col-sm-6">
             <uib-accordion>
                 <uib-accordion-group heading="RESPONSE" id="response" panel-class="panel-primary bootstrap-panel accordion-panel">
-                    <json-formatter json="functionVo.responseStr"></json-formatter>
+                    <!--<json-formatter json="functionVo.responseStr"></json-formatter>-->
+                    <div id="responseCanvas" class="Canvas">
+                        {{functionVo.responseStr}}
+                    </div>
                 </uib-accordion-group>
             </uib-accordion>
         </div>
     </div>
-    <div class="form-group" style="text-align:center;margin-top:30px;">
-        <button type="button" ng-click="submit()" class="btn btn-primary btn-lg">发送</button>
-    </div>
+
 </div>

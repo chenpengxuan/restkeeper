@@ -12,7 +12,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.appMenu', ['jsonFormatter'])
+    angular.module('BlurAdmin.pages.appMenu', [])
         .config(routeConfig);
 
     /** @ngInject */
@@ -21,12 +21,13 @@
         //根据数据库查 菜单
         $.ajax({
             url: "/application/listAppForMenu",
+            async:false,
             success: function (data) {
                 if (data.success) {
 
                     $.each(data.content, function (i, item) {
                         $stateProvider.state('menu_' + item.id, {
-                            url: '/menu',
+                            url: '/menu_'+item.id,
                             title: item.name,
                             template: '<ui-view></ui-view>',
                             abstract: true,
@@ -41,7 +42,6 @@
                                 title: func.name,
                                 url: '/func_' + func.id,
                                 templateUrl: 'func-submit.html',
-                                //abstract: true,
                                 controller: "funcSubmitCtrl",
                                 param: func.id,
                                 sidebarMeta: {
