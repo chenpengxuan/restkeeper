@@ -64,7 +64,7 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
     }
 
     @Override
-    public String submit(FunctionVo function) {
+    public Map submit(FunctionVo function) {
         String request = null;
         String response = null;
 
@@ -99,7 +99,11 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
         OperationLog operationLog = generateOperationLog(function, request, response);
         OperationLogService.save(operationLog);
 
-        return response;
+        Map<String,String> map = new HashMap<>();
+
+        map.put("request",request);
+        map.put("response",response);
+        return map;
     }
 
     private Map<String, Object> getParamMap(FunctionVo function) {
