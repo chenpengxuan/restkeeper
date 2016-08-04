@@ -3,6 +3,8 @@
  */
 package com.ymatou.restkeeper.model.vo;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 
  * @author qianmin 2016年8月2日 上午11:50:08
@@ -71,6 +73,9 @@ public class FunctionParamVo {
         this.defaultValue = defaultValue;
     }
     public Object getValue() {
+        if(value == null){
+            value = defaultValue;
+        }
         return value;
     }
     public void setValue(Object value) {

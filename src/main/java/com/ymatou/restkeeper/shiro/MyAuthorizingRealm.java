@@ -8,6 +8,7 @@
 package com.ymatou.restkeeper.shiro;
 
 
+import com.ymatou.restkeeper.util.CipherUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,8 +47,15 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
             return new SimpleAuthenticationInfo(userName, password, getName());
         }else{
             if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
+                password = CipherUtil.encryptMD5(password);
                 User user = userService.getUser(userName, password);
 
+                /**
+                 * 重新放入，防止 shiro报错org.apache.shiro.authc.IncorrectCredentialsException:
+                 * Submitted credentials for token [org.apache.shiro.authc.UsernamePasswordToken - admin, rememberMe=true]
+                 * did not match the expected credentials.
+                 */
+                authcToken.setPassword(password.toCharArray());
                 if(user != null){
                     return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
                 }else {

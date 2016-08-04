@@ -50,7 +50,6 @@ public class LoginController {
             if (currentUser.isAuthenticated()) {
                 return WapperUtil.success("该用户已经登录！");
             }
-
             // 登录Token验证
             String md5Password = CipherUtil.encryptMD5(password);
             UsernamePasswordToken token = new UsernamePasswordToken(username, password, true);
@@ -76,7 +75,7 @@ public class LoginController {
                     return WapperUtil.success("登录成功");
                 }
             } catch (AuthenticationException e) { // 登录失败
-                errorMessage = e.getCause().getMessage();
+                errorMessage = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
                 logger.info("登录失败",e);
             } catch (Exception e) {
                 errorMessage = "未知错误！";
