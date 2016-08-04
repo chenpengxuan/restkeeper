@@ -26,7 +26,7 @@
                 controller: 'loggerListCtrl',
                 sidebarMeta: {
                     icon: 'ion-grid',
-                    order: 300,
+                    order: 400,
                 },
             });
     }

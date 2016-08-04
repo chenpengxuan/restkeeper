@@ -3,6 +3,8 @@
  */
 package com.ymatou.restkeeper.contoller;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -38,13 +40,11 @@ public class FunctionController {
     @Autowired
     private FunctionParamService functionParamService;
 
-    @RequestMapping(path = "/submit", method = RequestMethod.POST, 
-            consumes="application/json", produces="application/json")
-    public Object submit(@RequestBody FunctionVo function){
+    @RequestMapping(path = "/submit", method = RequestMethod.POST,
+            consumes="application/json",produces="application/json")
+    public Map submit(@RequestBody FunctionVo function){
         
-        String result = functionService.submit(function);
-        
-        return WapperUtil.success(result);
+        return functionService.submit(function);
     }
 
 

@@ -8,6 +8,8 @@ import com.ymatou.restkeeper.model.vo.FunctionVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Map;
+
 /**
  * 
  * @author qianmin 2016年8月2日 下午2:33:48
@@ -21,7 +23,7 @@ public interface FunctionService extends BaseService<Function>{
      * @param function
      * @return
      */
-    String submit(FunctionVo function);
+    Map submit(FunctionVo function);
 
     Page<Function> list(Function function, Pageable pageable);
 
