@@ -33,38 +33,48 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">功能描述</label>
+                    <label class="col-sm-2 control-label">功能描述:</label>
                     {{functionVo.description}}
                 </div>
             </div>
         </div>
 
     </form>
-    <div id="form" ng-model="functionVo"  novalidate>
 
-        <div ba-panel ba-panel-title="功能参数设置" ba-panel-class="with-scroll">
-            <div include-with-scope="func-param.html"></div>
+    <div ba-panel ba-panel-title="功能参数设置" ba-panel-class="with-scroll">
+        <div class="form-group" ng-repeat="funcParam in functionVo.functionParams">
+            <label class="col-sm-1">{{funcParam.description}}</label>
+            <div class="col-sm-11" >
+                <input class="form-control" type="text" ng-model="funcParam.value"/>
+            </div>
         </div>
+    </div>
 
-        <!--<div class="form-group">-->
-            <!--<label class="control-label" style="float:left" for="functionParam">JSON body</label>-->
-            <!--<textarea class="col-sm-5" style="min-height: 200px;"  id="functionParam" ng-model="functionVo.functionParam"></textarea>-->
-            <!--<label class="control-label"  style="float:left" for="functionParam">response</label>-->
-            <!--<textarea class="col-sm-5" style="min-height: 200px;"  id="functionParam1"  ng-model="functionVo.functionParam1"></textarea>-->
-        <!--</div>-->
-        <uib-accordion>
-            <uib-accordion-group heading="JSON body" panel-class="panel-primary bootstrap-panel accordion-panel">
-                <textarea class="form-control" id="functionParam" style="min-height: 300px;" ng-model="functionVo.functionParam"></textarea>
-            </uib-accordion-group>
-        </uib-accordion>
 
-        <uib-accordion>
-            <uib-accordion-group heading="返回值" panel-class="panel-primary bootstrap-panel accordion-panel">
-                <textarea class="form-control"  style="min-height: 300px;" ng-model="functionVo.result"></textarea>
-            </uib-accordion-group>
-        </uib-accordion>
-        <div class="private-item form-group" style="text-align:center">
-            <button type="button" ng-click="submit()" class="btn btn-primary">发送</button>
+    <uib-accordion>
+        <uib-accordion-group heading="JSON body" panel-class="panel-primary bootstrap-panel accordion-panel">
+            <textarea class="form-control" id="functionParam" style="min-height: 300px;" ng-model="functionVo.functionParam"></textarea>
+        </uib-accordion-group>
+    </uib-accordion>
+
+    <div class="form-group">
+        <div class="col-sm-6">
+            <uib-accordion>
+                <uib-accordion-group heading="REQUEST" id="request" panel-class="panel-primary bootstrap-panel accordion-panel">
+                    {{functionVo.resultStr}}
+                </uib-accordion-group>
+            </uib-accordion>
         </div>
+        <div class="col-sm-6">
+            <uib-accordion>
+                <uib-accordion-group heading="RESULT" id="resultGroup" panel-class="panel-primary bootstrap-panel accordion-panel">
+                    {{functionVo.resultStr}}
+                </uib-accordion-group>
+            </uib-accordion>
+        </div>
+    </div>
+
+    <div class="form-group" style="text-align:center;margin-top:30px;">
+        <button type="button" ng-click="submit()" class="btn btn-primary btn-lg">发送</button>
     </div>
 </div>
