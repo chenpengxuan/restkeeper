@@ -39,10 +39,11 @@
       param.page = page;
       param.size = pageSize;
 
-      param.name = $scope.logger.name;
-      param.url = $scope.logger.url;
+      param.functionName = $scope.logger.functionName;
       param.userName = $scope.logger.userName;
       param.applicationId = $scope.logger.applicationId;
+      param.startTime = $scope.logger.startTime;
+      param.endTime = $scope.logger.endTime;
       param.sort = "o.update_time,desc";
 
       doPaging($http,"/logger/list",param,function (data) {

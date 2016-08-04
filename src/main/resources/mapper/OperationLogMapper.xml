@@ -43,7 +43,7 @@
 			
 			<if test="operationLog.applicationId !=null "> AND o.application_id = #{operationLog.applicationId} </if>
 			<if test="operationLog.userName !=null "> AND o.user_name like CONCAT('%',#{operationLog.userName},'%' ) </if>
-			<if test="operationLog.functionName !=null "> AND f.name like CONCAT('%',#{function.name},'%' ) </if>
+			<if test="operationLog.functionName !=null "> AND f.name like CONCAT('%',#{operationLog.functionName},'%' ) </if>
 			<if test="operationLog.startTime != null">
 				<![CDATA[ AND o.operate_time > #{operationLog.startTime} ]]> 
 			</if>
@@ -57,7 +57,7 @@
     <select id="findByOperationLogVo" resultType="com.ymatou.restkeeper.model.vo.OperationLogVo">
         SELECT <include refid="columns"/>, a.name as appName, f.name as functionName
 		FROM operation_log o left join function f on o.function_id = f.function_id
-		left join application a on a.application_id = a.application_id
+		left join application a on o.application_id = a.application_id
         <include refid="dynamicWhere"/>
     </select>
 

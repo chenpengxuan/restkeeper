@@ -30,9 +30,9 @@ public class OperationLogVo {
     private String status;
     private String appName;
     private String functionName;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     public Long getId() {
