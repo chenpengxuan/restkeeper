@@ -110,10 +110,46 @@ task wrapper(type: Wrapper) {
     gradleVersion = "2.4"
 }
 
-//task createStartScripts(type: CreateStartScripts) {
-//    outputDir = file('build/out')
-//    mainClassName = 'com.ymatou.restkeeper.Application'
-//    applicationName = 'restkeeper'
-//    optsEnvironmentVar = '--spring.location=application.properties'
-//    classpath = configurations.runtime
-//}
+//复制启动，停止脚本
+task copyScript(type: Copy) {
+    into "$buildDir/dist"
+    from "$projectDir/script"
+}
+
+//复制jar
+task copyJars(type: Copy,dependsOn:jar) {
+    from configurations.runtime  //项目所有的jar依赖
+    from "$buildDir/libs"        //本项目jar
+    into "$buildDir/dist/lib"
+}
+
+//复制配置
+task copyConfig(type: Copy){
+    from "$projectDir/src/main/resources/application.properties"
+    into "$buildDir/dist/conf"
+}
+
+//打包发布 发布为：gradle release 默认位置为：build/distributions
+task release(type: Zip,dependsOn:[copyScript,copyJars,copyConfig]) {
+    archiveName="restkeeper.zip"
+    from "$buildDir/dist"
+}
+
+
+
+/*
+// 以下方式为打包到一个jar内
+jar {
+    archiveName = "restkeeper.jar"
+    from {
+        configurations.runtime.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    manifest {
+        attributes 'Main-Class': 'com.ymatou.restkeeper.Application'
+    }
+}*/
