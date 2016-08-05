@@ -20,7 +20,7 @@
    **linx**:   
    ```gradlew clean release```
    
-   命令执行完后会生成build文件夹
+   命令执行完后会生成build文件夹   
    build
    |     --- classes
    |     --- dependency-cache
