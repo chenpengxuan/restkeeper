@@ -56,6 +56,21 @@
                 }
             }
         });
+
+        var userVo = getCurrentUser();
+        if(userVo.username == 'admin'){
+            $stateProvider.state('super_post', {
+                url: '/super_post',
+                title: "SuperPost",
+                templateUrl: 'super-post.html',
+                controller: "funcSubmitCtrl",
+                param: -1,
+                sidebarMeta: {
+                    icon: 'ion-grid',
+                    order: 299
+                }
+            });
+        }
     }
 
 })();

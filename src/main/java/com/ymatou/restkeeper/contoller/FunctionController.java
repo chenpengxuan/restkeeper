@@ -5,12 +5,15 @@ package com.ymatou.restkeeper.contoller;
 
 import java.util.Map;
 
+import com.google.common.collect.Iterables;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,7 +46,12 @@ public class FunctionController {
     @RequestMapping(path = "/submit", method = RequestMethod.POST,
             consumes="application/json",produces="application/json")
     public Map submit(@RequestBody FunctionVo function){
-        
+
+        //删除没有参数的functionparam
+        if(!CollectionUtils.isEmpty(function.getFunctionParams())){
+            Iterables.removeIf(function.getFunctionParams(),
+                    functionParamVo -> StringUtils.isBlank(functionParamVo.getParamName()));
+        }
         return functionService.submit(function);
     }
 
@@ -52,6 +60,11 @@ public class FunctionController {
             consumes="application/json", produces="application/json")
     public Object save(@RequestBody FunctionVo functionVo){
 
+        //删除没有参数的functionparam
+        if(!CollectionUtils.isEmpty(functionVo.getFunctionParams())){
+            Iterables.removeIf(functionVo.getFunctionParams(),
+                    functionParamVo -> StringUtils.isBlank(functionParamVo.getParamName()));
+        }
         functionService.saveFunction(functionVo);
 
         return WapperUtil.success();

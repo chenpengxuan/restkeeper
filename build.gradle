@@ -42,8 +42,10 @@ ext {
     apacheCommonVersion = "3.4"
     snakeyamlVersion = "1.2.4.RELEASE"
     shiroVersion = "1.2.3"
+    guavaVersion = "19.0"
     junitVersion = "4.11"
 }
+
 jar {
     baseName = "restkeeper"
 }
@@ -70,7 +72,7 @@ repositories {
 
 dependencies {
 
-
+    compile "com.google.guava:guava:${guavaVersion}"
 	compile "com.alibaba:druid:${druidVersion}"
 	compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
 	compile "org.apache.httpcomponents:httpmime:${httpClientVersion}"

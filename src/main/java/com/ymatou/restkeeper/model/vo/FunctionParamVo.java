@@ -15,6 +15,7 @@ public class FunctionParamVo {
     private Long id;
     private Long functionId;
     private String name;
+    private String paramName;
     private String type;
     private String format;
     private boolean isArray;
@@ -78,6 +79,15 @@ public class FunctionParamVo {
         }
         return value;
     }
+
+    public String getParamName() {
+        return paramName;
+    }
+
+    public void setParamName(String paramName) {
+        this.paramName = paramName;
+    }
+
     public void setValue(Object value) {
         this.value = value;
     }

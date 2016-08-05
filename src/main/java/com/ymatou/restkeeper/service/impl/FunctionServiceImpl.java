@@ -109,7 +109,7 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
     private Map<String, Object> getParamMap(FunctionVo function) {
         HashMap<String, Object> paramMap = new HashMap<>();
         for (FunctionParamVo functionParam : function.getFunctionParams()) {
-            String name = functionParam.getName();
+            String name = functionParam.getParamName();
             String type = functionParam.getType();
             String format = functionParam.getFormat();
             Object value = functionParam.getValue();
@@ -205,7 +205,7 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
                     if (functionParamVo.getId() != null) {// 修改
                         param = functionParamService.findById(functionParamVo.getId());
                         param.setName(functionParamVo.getName());
-                        param.setDescription(functionParamVo.getDescription());
+                        param.setParamName(functionParamVo.getParamName());
                         param.setDescription(functionParamVo.getDescription());
                         param.setArray(functionParamVo.isArray());
                         param.setFormat(functionParamVo.getFormat());

@@ -16,22 +16,29 @@
       .controller('funcSubmitCtrl', funcSubmitCtrl);
 
   /** @ngInject */
-  function funcSubmitCtrl($scope,$stateParams,$state,$http) {
+  function funcSubmitCtrl($scope,$stateParams,$state,$http,$filter) {
 
-    var id = $state.current.param;
-    $scope.functionVo = {};
+    $scope.functionId = $state.current.param;
+    $scope.functionVo = {
+      httpMethod: 'POST',
+      contentType: 'application/json',
+      functionParams: []
+    };
 
-    $http({
-      url: "/function/get",
-      method: 'GET',
-      params: {id: id}
-    }).success(function (data) {
-      if (data.success) {
-        $scope.functionVo = data.content;
-      }
-      $scope.functionVo.requestStr = "";
-      $scope.functionVo.responseStr = "";
-    });
+    if($scope.functionId != -1){ // -1 独立页面没有参数
+      $http({
+        url: "/function/get",
+        method: 'GET',
+        params: {id: $scope.functionId}
+      }).success(function (data) {
+        if (data.success) {
+          $scope.functionVo = data.content;
+        }
+        $scope.functionVo.requestStr = "";
+        $scope.functionVo.responseStr = "";
+      });
+    }
+
 
     $scope.submit = function(){
       $scope.functionVo.functionParam = $scope.functionVo.jsonBody;
@@ -90,6 +97,57 @@
       jfReq.doFormat($scope.functionVo.requestStr);
       jfResp.doFormat($scope.functionVo.responseStr);
     };
+
+
+    $scope.addParam = function() {
+      $scope.inserted = {
+        paramName:'',
+        value:'',
+        type: "string",
+        array: false
+      };
+      $scope.functionVo.functionParams.push($scope.inserted);
+    };
+
+    $scope.removeParam = function(index) {
+      layer.confirm('确定删除吗？', {
+            btn: ['确认', '取消'] //按钮
+          }, function (i) {
+            layer.close(i);
+            $scope.functionVo.functionParams.splice(index, 1);
+            $scope.$apply();//需要手动刷新
+          }, function () {
+          }
+      );
+    };
+
+    $scope.paramTypes = [
+      {value: "number", text: '数字'},
+      {value: "string", text: '字符串'},
+      {value: "time", text: '日期'}
+    ];
+
+    $scope.arrays = [
+      {value: false, text: '否'},
+      {value: true, text: '是'}
+    ];
+
+
+    $scope.showParamTypes = function(funcParam) {
+      var selected = [];
+      if(funcParam.type) {
+        selected = $filter('filter')($scope.paramTypes, {value: funcParam.type});
+      }
+      return selected.length ? selected[0].text : 'Not set';
+    };
+
+    $scope.showIsArray = function(funcParam) {
+      var selected = $filter('filter')($scope.arrays, {value: funcParam.array});
+
+      return selected.length ? selected[0].text : 'Not set';
+    };
+
+
   }
 
 })();

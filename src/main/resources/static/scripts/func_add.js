@@ -102,9 +102,10 @@
     $scope.addParam = function() {
       $scope.inserted = {
         name: '',
+        paramName:'',
         description:'',
         type: "string",
-        array: "0"
+        array: false
       };
       $scope.functionVo.functionParams.push($scope.inserted);
     };

@@ -7,10 +7,15 @@
 
 package com.ymatou.restkeeper.contoller;
 
+import com.ymatou.restkeeper.model.pojo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ymatou.restkeeper.util.CurrentUserUtil;
+import com.ymatou.restkeeper.util.WapperUtil;
 
 
 @Controller
@@ -28,13 +33,12 @@ public class IndexController {
         return "forward:/login.html";
     }
 
-//    @RequestMapping("/test")
-//    @ResponseBody
-//    public Object test(){
-//
-//        Page<User> page1 = userService.findByPage(new PageRequest(0,10));
-//        Page<User> page2 = userService.findByUser(new User(),new PageRequest(0,10));
-//        return new Object[]{page1,page2};
-//    }
+    @RequestMapping("/getCurrentUser")
+    @ResponseBody
+    public Object getCurrentUser(){
+        User user = CurrentUserUtil.getCurrentUser();
+        user.setPassword("");
+        return WapperUtil.success(CurrentUserUtil.getCurrentUser());
+    }
 
 }

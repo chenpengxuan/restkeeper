@@ -25,6 +25,9 @@ public class FunctionParam extends Audit {
     @Column(name = "name")
     protected String name;
 
+    @Column(name = "param_name")
+    protected String paramName;
+
     @Column(name = "type")
     protected String type;
 
@@ -102,5 +105,13 @@ public class FunctionParam extends Audit {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public String getParamName() {
+        return paramName;
+    }
+
+    public void setParamName(String paramName) {
+        this.paramName = paramName;
     }
 }
