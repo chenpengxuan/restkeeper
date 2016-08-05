@@ -114,4 +114,14 @@ public class LoginController {
 
         return WapperUtil.error("您还未登录！");
     }
+    
+    @RequestMapping("/version")
+    public String version() {
+        return "2016-08-05";
+    }
+    
+    @RequestMapping("/warmup")
+    public String status() {
+        return "ok";
+    }
 }
