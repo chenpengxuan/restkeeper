@@ -17,21 +17,21 @@
    **windows**:   
    ```gradlew.bat clean release```
    
-   **linx**:   
+   **linux**:   
    ```gradlew clean release```
    
    命令执行完后会生成build文件夹   
-   build
-   |     --- classes
-   |     --- dependency-cache
-   |     --- dist
-   |     --- --- bin
-   |     --- --- --- startup.sh
-   |     --- --- --- stop.sh
-   |     --- --- conf
-   |     --- --- lib
-   |     --- distributions
-   |     --- --- restkeeper.zip
+   build  
+   |     --- classes  
+   |     --- dependency-cache  
+   |     --- dist  
+   |     --- --- bin  
+   |     --- --- --- startup.sh  
+   |     --- --- --- stop.sh  
+   |     --- --- conf  
+   |     --- --- lib  
+   |     --- distributions  
+   |     --- --- restkeeper.zip   
    
   
    取dist 文件夹所有内容进行发布 或者使用restkeeper.zip
