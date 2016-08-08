@@ -17,7 +17,7 @@ fi
 ln -s /usr/local/log/${APP_NAME}/ logs
 
 ##############launch the service##################
-nohup java ${JAVA_OPTS} -cp ${CLASS_PATH} ${MAIN_CLASS} --spring.config.location=file:/usr/local/${APP_NAME}/default/conf/application.properties  >> ${GCLOGPATH} 2>&1 &
+nohup java ${JAVA_OPTS} -cp ${CLASS_PATH} ${MAIN_CLASS} >> ${GCLOGPATH} 2>&1 &
 
 ##############check the service####################
 ps aux | grep ${MAIN_CLASS} | grep -v grep > /dev/null 2>&1

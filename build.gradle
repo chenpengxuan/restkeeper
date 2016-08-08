@@ -21,13 +21,17 @@ apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "spring-boot"
 apply plugin: "maven"
-apply plugin: 'application'
 apply plugin: "eclipse-wtp"
-
 
 
 springBoot {
     executable = true
+    mainClass = "com.ymatou.restkeeper.Application"
+}
+
+jar {
+    baseName = "restkeeper"
+    exclude('application.properties')
 }
 
 ext {
@@ -45,12 +49,6 @@ ext {
     guavaVersion = "19.0"
     junitVersion = "4.11"
 }
-
-jar {
-    baseName = "restkeeper"
-}
-// 启动类
-mainClassName = 'com.ymatou.restkeeper.Application'
 
 configurations {
 
