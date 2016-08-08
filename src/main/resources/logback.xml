@@ -3,11 +3,11 @@
 
     <contextName>dev</contextName>
 
-    <property name="LOG_HOME" value="/data/www/lsqtest/log" />
+    <property name="LOG_HOME" value="/usr/local/log/restkeeper.ymatou.cn" />
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/lsqtest.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_HOME}/restkeeper.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
