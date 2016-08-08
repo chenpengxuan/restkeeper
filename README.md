@@ -26,6 +26,7 @@
    |     --- dependency-cache  
    |     --- dist  
    |     --- --- bin  
+   |     --- --- --- restkeeper.sh  
    |     --- --- --- start.sh  
    |     --- --- --- stop.sh  
    |     --- --- conf  
