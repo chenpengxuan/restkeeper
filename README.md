@@ -26,7 +26,7 @@
    |     --- dependency-cache  
    |     --- dist  
    |     --- --- bin  
-   |     --- --- --- startup.sh  
+   |     --- --- --- start.sh  
    |     --- --- --- stop.sh  
    |     --- --- conf  
    |     --- --- lib  

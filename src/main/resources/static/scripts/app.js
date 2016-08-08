@@ -22,6 +22,23 @@ var app = angular.module('BlurAdmin', [
   'BlurAdmin.pages'
 ]);
 
+app.filter('limit', function () {
+  return function(value,maxLength) {
+    //还可以这样取
+    //var args = Array.prototype.slice.call(arguments);
+    //console.log(args);
+    if(!angular.isString(value)) {
+      return value;
+    }
+    if(value.length > maxLength){
+      return value.substr(0,maxLength)+"...";
+    }
+    return value.replace(/^\s+|\s+$/g, '');
+  };
+});
+
+
+
 addInterceptor(app);
 
 function logout () {

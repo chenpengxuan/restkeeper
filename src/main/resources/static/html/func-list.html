@@ -52,8 +52,8 @@
               <td class="table-id">{{item.id}}</td>
               <td>{{item.name}}</td>
               <td>{{item.appName}}</td>
-              <td>{{item.description}}</td>
-              <td>{{item.url}}</td>
+              <td title="{{item.description}}">{{item.description | limit:50}}</td>
+              <td title="{{item.url}}">{{item.url | limit:50}}</td>
               <td>{{item.httpMethod}}</td>
               <td>{{item.contentType}}</td>
               <td>{{item.author}}</td>
