@@ -51,8 +51,8 @@
               <td>{{item.functionName}}</td>
               <td>{{item.appName}}</td>
               <td>{{item.operateTime}}</td>
-              <td>{{item.request}}</td>
-              <td>{{item.response}}</td>
+              <td title="{{item.request}}">{{item.request |limit:100}}</td>
+              <td title="{{item.response}}">{{item.response |limit:100}}</td>
             </tr>
             </tbody>
           </table>

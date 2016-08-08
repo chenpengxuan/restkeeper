@@ -41,7 +41,27 @@
 
 
     $scope.submit = function(){
+
+      /*
       $scope.functionVo.functionParam = $scope.functionVo.jsonBody;
+      var valid = false;
+      if($scope.functionVo.functionParams.length > 0 ){
+        $.each($scope.functionVo.functionParams,function(i,item){
+          if(item.value != ''){
+            valid = true;
+          }
+        });
+      }
+      if(!valid && $scope.functionVo.functionParam != ''){//不能过
+        valid = true;
+      }
+      if(!valid){
+        layer.alert("",{closeBtn: 0},function (index) {
+          layer.close(index)
+        });
+        return
+      }
+      */
       $.ajax({
         type: "POST",
         url: "/function/submit",

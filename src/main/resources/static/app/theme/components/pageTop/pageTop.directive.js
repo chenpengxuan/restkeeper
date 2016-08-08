@@ -13,6 +13,13 @@
     return {
       restrict: 'E',
       templateUrl: 'app/theme/components/pageTop/pageTop.html',
+      controller:function () {
+
+          try {
+            $("#loginUserName").html(getCurrentUser().username);
+          } catch (e) {
+          }
+      }
     };
   }
 

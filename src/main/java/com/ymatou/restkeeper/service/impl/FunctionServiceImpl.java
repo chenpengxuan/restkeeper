@@ -8,11 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.ymatou.restkeeper.dao.jpa.FunctionParamRepository;
-import com.ymatou.restkeeper.dao.mapper.FunctionMapper;
-import com.ymatou.restkeeper.model.StatusEnum;
-import com.ymatou.restkeeper.model.pojo.FunctionParam;
-import com.ymatou.restkeeper.service.FunctionParamService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,20 +16,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.ymatou.restkeeper.dao.jpa.FunctionParamRepository;
 import com.ymatou.restkeeper.dao.jpa.FunctionRepository;
+import com.ymatou.restkeeper.dao.mapper.FunctionMapper;
+import com.ymatou.restkeeper.model.StatusEnum;
 import com.ymatou.restkeeper.model.pojo.Function;
+import com.ymatou.restkeeper.model.pojo.FunctionParam;
 import com.ymatou.restkeeper.model.pojo.OperationLog;
 import com.ymatou.restkeeper.model.vo.FunctionParamVo;
 import com.ymatou.restkeeper.model.vo.FunctionVo;
+import com.ymatou.restkeeper.service.FunctionParamService;
 import com.ymatou.restkeeper.service.FunctionService;
 import com.ymatou.restkeeper.service.OperationLogService;
 import com.ymatou.restkeeper.util.Constants;
 import com.ymatou.restkeeper.util.CurrentUserUtil;
 import com.ymatou.restkeeper.util.HttpClientUtil;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 /**
  * 
@@ -114,8 +114,10 @@ public class FunctionServiceImpl extends BaseServiceImpl<Function> implements Fu
             String format = functionParam.getFormat();
             Object value = functionParam.getValue();
             if (functionParam.isArray()) {
-                value = Arrays.asList(value.toString().split(","))
-                        .stream().map(v -> format(type, format, v)).collect(Collectors.toList());
+                if(null != value){
+                    value = Arrays.asList(value.toString().split(","))
+                            .stream().map(v -> format(type, format, v)).collect(Collectors.toList());
+                }
             } else {
                 value = format(type, format, value);
             }

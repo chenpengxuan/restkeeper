@@ -19,7 +19,7 @@
   function loggerListCtrl($scope, $state,$http) {
 
     $scope.page = 1;
-    $scope.pageSize = 10;
+    $scope.pageSize = 20;
     $scope.total = 0;
     $scope.logger = {};
 
