@@ -8,6 +8,7 @@
 package com.ymatou.restkeeper.shiro;
 
 
+import com.ymatou.restkeeper.config.BizConfig;
 import com.ymatou.restkeeper.util.CipherUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -30,6 +31,8 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private BizConfig bizConfig;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -42,8 +45,9 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
         String userName = authcToken.getUsername();
         String password = String.valueOf(authcToken.getPassword());
         logger.info("login userName: " + userName);
-        
-        if(LdapHelper.authenticate(userName, password)){
+
+        String ldapUrl = bizConfig.getLdapUrl();
+        if(LdapHelper.authenticate(userName, password,ldapUrl)){
             return new SimpleAuthenticationInfo(userName, password, getName());
         }else{
             if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){

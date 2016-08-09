@@ -45,7 +45,7 @@ import com.ymatou.common.mybatis.interceptor.PaginationInterceptor;
 @EnableJpaRepositories(basePackages = "com.ymatou.restkeeper.dao.jpa")
 @EnableJpaAuditing
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableConfigurationProperties(ConnectionConfig.class)
+@EnableConfigurationProperties({ConnectionConfig.class,BizConfig.class})
 public class DataSourceConfig
         implements TransactionManagementConfigurer {
     @Autowired
