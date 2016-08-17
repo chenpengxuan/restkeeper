@@ -8,6 +8,8 @@ package com.ymatou.restkeeper.background;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +19,7 @@ import javax.persistence.EntityManagerFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
@@ -38,7 +41,7 @@ import com.ymatou.restkeeper.util.HttpClientUtil;
  * @author luoshiqian 2016/8/17 11:01
  */
 @Component
-public class Exections {
+public class Exections implements DisposableBean{
 
     private static final Logger logger = LoggerFactory.getLogger(Exections.class);
 
@@ -50,61 +53,66 @@ public class Exections {
     private TransactionTemplate transactionTemplate;
     @Autowired
     private EntityManagerFactory entityManagerFactory;
+    private ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+
     @PostConstruct
     public void start() {
 
-        new Thread(() -> {
+        for(int i=0;i<10;i++){
 
-            logger.info("------------ start to exections -----------------------------------------");
-            while (true) {
+            executorService.execute(() -> {
 
-                List<Exection> exectionList = exectionService.findNeedExec(new PageRequest(0, 1000));
+                logger.info("------------ start to exections ,threadName:{}-----------------------------------------",Thread.currentThread().getName());
+                while (true) {
 
-                logger.info("------------ find exections size {} -----------------------------------------",
-                        exectionList == null ? 0 : exectionList.size());
-                if (!CollectionUtils.isEmpty(exectionList)) {
-                    openEntity();
-                    for (Exection e : exectionList) {
+                    List<Exection> exectionList = exectionService.findNeedExec(new PageRequest(0, 1000));
 
-                        try {
-                            if (StringUtils.isNotBlank(e.getJson())) {
-                                transactionTemplate.execute(status -> {
-                                    int count = exectionService.updateToWait(e.getId());
+                    logger.info("------------ find exections size:{},threadName:{} -----------------------------------------",
+                            exectionList == null ? 0 : exectionList.size(),Thread.currentThread().getName());
+                    if (!CollectionUtils.isEmpty(exectionList)) {
+                        openEntity();
+                        for (Exection e : exectionList) {
 
-                                    if (count > 0) {
+                            try {
+                                if (StringUtils.isNotBlank(e.getJson())) {
+                                    transactionTemplate.execute(status -> {
+                                        int count = exectionService.updateToWait(e.getId());
 
-                                        String request = e.getJson();
-                                        String response = null;
-                                        try {
-                                            response = HttpClientUtil.sendPost(e.getUrl(), request, Constants.APPLICATION_JSON);
-                                            e.setExecStatus(ExecStatusEnum.SUCCESS.name());
-                                        } catch (Exception e1) {
-                                            logger.error("error post :{}", request, e1);
-                                            e.setExecStatus(ExecStatusEnum.FAIL.name());
+                                        if (count > 0) {
+
+                                            String request = e.getJson();
+                                            String response = null;
+                                            try {
+                                                response = HttpClientUtil.sendPost(e.getUrl(), request, Constants.APPLICATION_JSON);
+                                                e.setExecStatus(ExecStatusEnum.SUCCESS.name());
+                                            } catch (Exception e1) {
+                                                logger.error("error post :{}", request, e1);
+                                                e.setExecStatus(ExecStatusEnum.FAIL.name());
+                                            }
+                                            exectionService.save(e);
+                                            OperationLog operationLog = generateOperationLog(request, response);
+                                            operationLogService.save(operationLog);
                                         }
-                                        exectionService.save(e);
-                                        OperationLog operationLog = generateOperationLog(request, response);
-                                        operationLogService.save(operationLog);
-                                    }
-                                    return null;
-                                });
+                                        return null;
+                                    });
+                                }
+                            } catch (Exception e1) {
+                                logger.error("do exection error",e1);
                             }
-                        } catch (Exception e1) {
-                            logger.error("do exection error",e1);
-                        }
 
-                    }
-                    colseEntity();
-                } else {
-                    try {
-                        TimeUnit.SECONDS.sleep(60);
-                    } catch (InterruptedException e) {
-                        logger.error("InterruptedException", e);
+                        }
+                        colseEntity();
+                    } else {
+                        try {
+                            TimeUnit.SECONDS.sleep(60);
+                        } catch (InterruptedException e) {
+                            logger.error("InterruptedException", e);
+                        }
                     }
                 }
-            }
-        }).start();
-
+            });
+        }
     }
 
 
@@ -132,4 +140,9 @@ public class Exections {
         EntityManagerFactoryUtils.closeEntityManager(emHolder.getEntityManager());
     }
 
+
+    @Override
+    public void destroy() throws Exception {
+        executorService.shutdown();
+    }
 }
