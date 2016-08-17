@@ -10,8 +10,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import com.ymatou.common.mybatis.annotation.MyBatisDao;
-import com.ymatou.common.mybatis.typehandler.SerializableTypeHandler;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.TypeHandler;
@@ -34,10 +32,13 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.ymatou.common.mybatis.annotation.MyBatisDao;
 import com.ymatou.common.mybatis.interceptor.PaginationInterceptor;
+import com.ymatou.common.mybatis.typehandler.SerializableTypeHandler;
 
 
 @Configuration
@@ -132,6 +133,12 @@ public class DataSourceConfig
     public PlatformTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(dataSource());
         return transactionManager;
+    }
+
+    @Bean(name = "transactionTemplate")
+    public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
+        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+        return transactionTemplate;
     }
 
 }
