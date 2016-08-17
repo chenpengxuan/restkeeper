@@ -8,6 +8,7 @@ package com.ymatou.restkeeper.background;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -59,38 +60,38 @@ public class Exections implements DisposableBean{
     @PostConstruct
     public void start() {
 
-        for(int i=0;i<10;i++){
+        new Thread(() -> {
 
-            executorService.execute(() -> {
+            logger.info("------------ start to exections ,threadName:{}-----------------------------------------",Thread.currentThread().getName());
+            while (true) {
 
-                logger.info("------------ start to exections ,threadName:{}-----------------------------------------",Thread.currentThread().getName());
-                while (true) {
+                List<Exection> exectionList = exectionService.findNeedExec(new PageRequest(0, 1000));
 
-                    List<Exection> exectionList = exectionService.findNeedExec(new PageRequest(0, 1000));
+                logger.info("------------ find exections size:{},threadName:{} -----------------------------------------",
+                        exectionList == null ? 0 : exectionList.size(),Thread.currentThread().getName());
+                if (!CollectionUtils.isEmpty(exectionList)) {
 
-                    logger.info("------------ find exections size:{},threadName:{} -----------------------------------------",
-                            exectionList == null ? 0 : exectionList.size(),Thread.currentThread().getName());
-                    if (!CollectionUtils.isEmpty(exectionList)) {
-                        openEntity();
-                        for (Exection e : exectionList) {
-
+                    CountDownLatch countDownLatch = new CountDownLatch(exectionList.size());
+                    for (Exection exec : exectionList) {
+                        executorService.execute(() -> {
                             try {
-                                if (StringUtils.isNotBlank(e.getJson())) {
+                                openEntity();
+                                if (StringUtils.isNotBlank(exec.getJson())) {
                                     transactionTemplate.execute(status -> {
-                                        int count = exectionService.updateToWait(e.getId());
+                                        int count = exectionService.updateToWait(exec.getId());
 
                                         if (count > 0) {
 
-                                            String request = e.getJson();
+                                            String request = exec.getJson();
                                             String response = null;
                                             try {
-                                                response = HttpClientUtil.sendPost(e.getUrl(), request, Constants.APPLICATION_JSON);
-                                                e.setExecStatus(ExecStatusEnum.SUCCESS.name());
+                                                response = HttpClientUtil.sendPost(exec.getUrl(), request, Constants.APPLICATION_JSON);
+                                                exec.setExecStatus(ExecStatusEnum.SUCCESS.name());
                                             } catch (Exception e1) {
                                                 logger.error("error post :{}", request, e1);
-                                                e.setExecStatus(ExecStatusEnum.FAIL.name());
+                                                exec.setExecStatus(ExecStatusEnum.FAIL.name());
                                             }
-                                            exectionService.save(e);
+                                            exectionService.save(exec);
                                             OperationLog operationLog = generateOperationLog(request, response);
                                             operationLogService.save(operationLog);
                                         }
@@ -99,20 +100,28 @@ public class Exections implements DisposableBean{
                                 }
                             } catch (Exception e1) {
                                 logger.error("do exection error",e1);
+                            } finally {
+                                colseEntity();
+                                countDownLatch.countDown();
                             }
+                        });
+                    }
 
-                        }
-                        colseEntity();
-                    } else {
-                        try {
-                            TimeUnit.SECONDS.sleep(60);
-                        } catch (InterruptedException e) {
-                            logger.error("InterruptedException", e);
-                        }
+                    try {
+                        countDownLatch.await(180,TimeUnit.SECONDS); //最多等待3分钟
+                    } catch (InterruptedException e) {
+                        logger.error("InterruptedException", e);
+                    }
+
+                } else {
+                    try {
+                        TimeUnit.SECONDS.sleep(60);
+                    } catch (InterruptedException e) {
+                        logger.error("InterruptedException", e);
                     }
                 }
-            });
-        }
+            }
+        }).start();
     }
 
 
