@@ -42,8 +42,9 @@
 
     $scope.submit = function(){
 
-      /*
       $scope.functionVo.functionParam = $scope.functionVo.jsonBody;
+      /*
+
       var valid = false;
       if($scope.functionVo.functionParams.length > 0 ){
         $.each($scope.functionVo.functionParams,function(i,item){
