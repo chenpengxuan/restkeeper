@@ -113,7 +113,11 @@ $.ajax({
   async:false,
   url: "/getCurrentUser",
   success: function(data){
-    cookie.addCookie(COOKIE_UserVo,JSON.stringify(data.content));
+    if(data.success){
+      cookie.addCookie(COOKIE_UserVo,JSON.stringify(data.content));
+    }else{
+      location.href = "login.html";
+    }
   }
 });
 

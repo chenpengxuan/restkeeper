@@ -37,13 +37,7 @@ public class MySimpleMappingExceptionResolver extends SimpleMappingExceptionReso
 
         if (isAjax) {
 
-            if (ex instanceof BaseException) {
-                responseString(response, JSON.toJSONString(WapperUtil.error(ResponseStatusEnum.ERROR, ex.getMessage())));
-            } else if (ex instanceof BaseRunTimeException) {
-                responseString(response, JSON.toJSONString(WapperUtil.error(ResponseStatusEnum.ERROR, ex.getMessage())));
-            } else {
-                return super.doResolveException(request, response, handler, ex);
-            }
+            responseString(response, JSON.toJSONString(WapperUtil.error(ResponseStatusEnum.ERROR, ex.getMessage())));
 
             return new ModelAndView();
         }
