@@ -44,7 +44,7 @@ JsonFormater.prototype = {
             this.isFormated = true;
         } catch (e) {
             // alert("JSON数据格式不正确:\n" + e.message);
-            $(this.options.dom).html("");
+            $(this.options.dom).html(json);
             this.isFormated = false;
         }
     },
